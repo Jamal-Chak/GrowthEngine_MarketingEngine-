@@ -6,12 +6,16 @@
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
-        "lint": "next lint"
+        "lint": "next lint",
+        "test": "npm run lint && npm run build"
     },
     "dependencies": {
+        "@supabase/ssr": "^0.8.0",
         "@supabase/supabase-js": "^2.89.0",
         "axios": "^1.7.9",
+        "canvas-confetti": "^1.9.4",
         "framer-motion": "^11.15.0",
+        "kbar": "^0.1.0-beta.48",
         "lucide-react": "^0.468.0",
         "next": "^15.1.0",
         "react": "^19.0.0",
@@ -20,9 +24,10 @@
         "zustand": "^5.0.2"
     },
     "devDependencies": {
-        "@types/node": "^22",
-        "@types/react": "^19",
-        "@types/react-dom": "^19",
+        "@types/canvas-confetti": "^1.9.0",
+        "@types/node": "^22.19.6",
+        "@types/react": "^19.2.8",
+        "@types/react-dom": "^19.2.3",
         "autoprefixer": "^10.0.1",
         "eslint": "^9",
         "eslint-config-next": "^15.1.0",

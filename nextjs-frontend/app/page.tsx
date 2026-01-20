@@ -1,215 +1,112 @@
 'use client';
 
-import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { LogIn, Mail, Lock, Sparkles, TrendingUp, Zap } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabase';
+import { ArrowRight, Sparkles, TrendingUp, Zap, Target, BarChart2 } from 'lucide-react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/Button';
 
-export default function LoginPage() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState('');
-    const router = useRouter();
-
-    const handleLogin = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setIsLoading(true);
-        setError('');
-
-        try {
-            const { data, error: signInError } = await supabase.auth.signInWithPassword({
-                email,
-                password,
-            });
-
-            if (signInError) throw signInError;
-
-            if (data.session) {
-                router.push('/dashboard');
-            }
-        } catch (err: any) {
-            setError(err.message || 'Login failed. Please try again.');
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
+export default function LandingPage() {
     return (
-        <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
-            {/* Animated Background Elements */}
-            <div className="absolute inset-0 overflow-hidden">
-                <motion.div
-                    className="absolute top-20 left-20 w-72 h-72 bg-primary-500/20 rounded-full blur-3xl"
-                    animate={{
-                        scale: [1, 1.2, 1],
-                        opacity: [0.3, 0.5, 0.3],
-                    }}
-                    transition={{
-                        duration: 8,
-                        repeat: Infinity,
-                        ease: "easeInOut"
-                    }}
-                />
-                <motion.div
-                    className="absolute bottom-20 right-20 w-96 h-96 bg-accent-500/20 rounded-full blur-3xl"
-                    animate={{
-                        scale: [1.2, 1, 1.2],
-                        opacity: [0.3, 0.5, 0.3],
-                    }}
-                    transition={{
-                        duration: 10,
-                        repeat: Infinity,
-                        ease: "easeInOut"
-                    }}
-                />
+        <div className="min-h-screen relative overflow-hidden">
+            {/* Background Gradients */}
+            <div className="absolute inset-0 overflow-hidden -z-10">
+                <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl opacity-50" />
+                <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-accent-500/20 rounded-full blur-3xl opacity-50" />
             </div>
 
-            <div className="w-full max-w-6xl grid lg:grid-cols-2 gap-8 items-center relative z-10">
-                {/* Left Side - Branding */}
-                <motion.div
-                    initial={{ opacity: 0, x: -50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8 }}
-                    className="hidden lg:block space-y-8"
-                >
-                    <div className="space-y-4">
-                        <motion.div
-                            className="flex items-center gap-3"
-                            whileHover={{ scale: 1.05 }}
-                        >
-                            <div className="p-3 bg-gradient-to-br from-primary-500 to-accent-500 rounded-2xl">
-                                <Sparkles className="w-8 h-8" />
-                            </div>
-                            <h1 className="text-5xl font-bold text-gradient">GrowthEngine</h1>
-                        </motion.div>
-                        <p className="text-xl text-white/70">
-                            AI-Powered Growth Platform for Modern Teams
+            {/* Navigation */}
+            <nav className="p-6 flex items-center justify-between max-w-7xl mx-auto">
+                <div className="flex items-center gap-2">
+                    <div className="p-2 bg-gradient-to-br from-primary-500 to-accent-500 rounded-lg">
+                        <Sparkles className="w-5 h-5 text-white" />
+                    </div>
+                    <span className="text-xl font-bold">GrowthEngine</span>
+                </div>
+                <div className="flex items-center gap-4">
+                    <Link href="/login" className="text-sm font-medium hover:text-white/80 transition-colors">
+                        Sign In
+                    </Link>
+                    <Link href="/register">
+                        <Button className="!py-2 !px-4">Get Started</Button>
+                    </Link>
+                </div>
+            </nav>
+
+            {/* Hero Section */}
+            <main className="max-w-7xl mx-auto px-6 pt-20 pb-32">
+                <div className="text-center max-w-4xl mx-auto space-y-8">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="space-y-4"
+                    >
+                        <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
+                            Stop Guessing. <br />
+                            <span className="text-gradient">Start Growing.</span>
+                        </h1>
+                        <p className="text-xl text-white/60 max-w-2xl mx-auto leading-relaxed">
+                            Your AI-powered Growth Strategist. We analyze your data to tell you exactly
+                            <span className="text-white font-medium"> what to do next </span>
+                            to increase revenue, retention, and engagement.
                         </p>
-                    </div>
+                    </motion.div>
 
-                    <div className="space-y-6">
-                        {[
-                            { icon: TrendingUp, title: 'Smart Analytics', desc: 'AI-driven insights that actually matter' },
-                            { icon: Zap, title: 'Instant Actions', desc: 'Turn recommendations into results' },
-                            { icon: Sparkles, title: 'Gamified Growth', desc: 'Make progress fun and engaging' },
-                        ].map((feature, i) => (
-                            <motion.div
-                                key={i}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.3 + i * 0.1 }}
-                                className="flex items-start gap-4 card"
-                            >
-                                <div className="p-3 bg-gradient-to-br from-primary-500/20 to-accent-500/20 rounded-xl">
-                                    <feature.icon className="w-6 h-6 text-primary-400" />
-                                </div>
-                                <div>
-                                    <h3 className="font-semibold text-lg">{feature.title}</h3>
-                                    <p className="text-white/60">{feature.desc}</p>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                </motion.div>
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                        className="flex items-center justify-center gap-4"
+                    >
+                        <Link href="/register">
+                            <Button className="text-lg px-8 py-4 h-auto">
+                                Start Your First Mission <ArrowRight className="w-5 h-5 ml-2" />
+                            </Button>
+                        </Link>
+                        <Link href="/login">
+                            <button className="px-8 py-4 rounded-xl border border-white/10 hover:bg-white/5 transition-colors font-medium">
+                                View Demo
+                            </button>
+                        </Link>
+                    </motion.div>
+                </div>
 
-                {/* Right Side - Login Form */}
+                {/* Value Props / First 10 Minutes */}
                 <motion.div
-                    initial={{ opacity: 0, x: 50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8 }}
-                    className="w-full"
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                    className="mt-32 grid md:grid-cols-3 gap-8"
                 >
-                    <div className="card p-8 lg:p-12 space-y-8">
-                        <div className="text-center space-y-2">
-                            <h2 className="text-3xl font-bold">Welcome Back</h2>
-                            <p className="text-white/60">Sign in to continue your growth journey</p>
-                        </div>
-
-                        <form onSubmit={handleLogin} className="space-y-6">
-                            {error && (
-                                <motion.div
-                                    initial={{ opacity: 0, y: -10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    className="p-4 bg-red-500/10 border border-red-500/50 rounded-xl text-red-400 text-sm"
-                                >
-                                    {error}
-                                </motion.div>
-                            )}
-
-                            <div className="space-y-2">
-                                <label htmlFor="email" className="block text-sm font-medium text-white/80">
-                                    Email Address
-                                </label>
-                                <div className="relative">
-                                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
-                                    <input
-                                        id="email"
-                                        type="email"
-                                        placeholder="you@example.com"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        className="input-field pl-12"
-                                        required
-                                    />
-                                </div>
+                    {[
+                        {
+                            icon: Target,
+                            title: "1. Connect Data",
+                            desc: "Link your analytics or just tell us your goals. We build a custom growth profile in minutes."
+                        },
+                        {
+                            icon: Zap,
+                            title: "2. Get Missions",
+                            desc: "Receive 3 high-impact, actionable tasks every week tailored to your specific metrics."
+                        },
+                        {
+                            icon: TrendingUp,
+                            title: "3. Measure Impact",
+                            desc: "Execute missions and watch your Growth Score rise as real revenue increases."
+                        }
+                    ].map((feature, i) => (
+                        <div key={i} className="p-8 glass rounded-2xl space-y-4 relative overflow-hidden group">
+                            <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-accent-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                            <div className="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center">
+                                <feature.icon className="w-6 h-6 text-primary-400" />
                             </div>
-
-                            <div className="space-y-2">
-                                <label htmlFor="password" className="block text-sm font-medium text-white/80">
-                                    Password
-                                </label>
-                                <div className="relative">
-                                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
-                                    <input
-                                        id="password"
-                                        type="password"
-                                        placeholder="••••••••"
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        className="input-field pl-12"
-                                        required
-                                    />
-                                </div>
-                            </div>
-
-                            <motion.button
-                                type="submit"
-                                disabled={isLoading}
-                                className="w-full btn-primary flex items-center justify-center gap-2"
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
-                            >
-                                {isLoading ? (
-                                    <>
-                                        <motion.div
-                                            className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
-                                            animate={{ rotate: 360 }}
-                                            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                                        />
-                                        Signing in...
-                                    </>
-                                ) : (
-                                    <>
-                                        <LogIn className="w-5 h-5" />
-                                        Sign In
-                                    </>
-                                )}
-                            </motion.button>
-                        </form>
-
-                        <div className="text-center">
-                            <p className="text-white/60">
-                                Don't have an account?{' '}
-                                <a href="/register" className="text-primary-400 hover:text-primary-300 font-semibold transition-colors">
-                                    Create one now
-                                </a>
+                            <h3 className="text-xl font-bold">{feature.title}</h3>
+                            <p className="text-white/60 leading-relaxed">
+                                {feature.desc}
                             </p>
                         </div>
-                    </div>
+                    ))}
                 </motion.div>
-            </div>
+            </main>
         </div>
     );
 }

@@ -1,323 +1,189 @@
-# GrowthEngine – Technical TODO.md
+# GrowthEngine – Product Improvement & Feature Expansion TODO
 
-This document defines the **practical technical structure** needed to build GrowthEngine as a scalable, production-ready SaaS. This is written for real development, not theory.
-
----
-
-## 0. Technical North Star
-
-**Goal:**
-Build a scalable, modular SaaS that supports:
-
-* AI-driven recommendations
-* Event-based analytics
-* Gamified action system
-* Team-based B2B usage
-
-**Core Principle:**
-
-> Data → Insight → Action → Feedback
-
-Every technical decision must support this loop.
+## 🎯 CORE GOAL
+Turn GrowthEngine into a **decision + execution engine** that:
+- Tells users *what to do next*
+- Measures real business impact
+- Builds habits through meaningful gamification
 
 ---
 
-## 1. High-Level Architecture
+## ✅ PHASE 1: FOUNDATION HARDENING (HIGH PRIORITY)
 
-### Stack (Recommended)
+### 1. Product Positioning & UX
+- [ ] Rewrite homepage value proposition (outcomes > features)
+- [ ] Add “What happens in your first 10 minutes” section
+- [ ] Define 1 primary user persona (Founder / Marketer / Agency)
+- [ ] Remove any UI elements that do not support decision-making
 
-**Frontend**
+### 2. Onboarding Flow (Critical)
+- [ ] Step 1: Select business type (SaaS, Ecommerce, Service)
+- [ ] Step 2: Select growth goal (Revenue, Leads, Retention)
+- [ ] Step 3: Connect at least one data source (manual allowed)
+- [ ] Step 4: Generate first AI mission (confetti only here)
 
-* React (Vite)
-* Tailwind CSS
-* Context + Hooks (state)
-* React Router
-
-**Backend**
-
-* Node.js
-* Express
-* MongoDB (or PostgreSQL)
-* JWT Auth
-
-**Optional (Later)**
-
-* Redis (caching)
-* Queue (BullMQ)
-* LLM API (OpenAI / Anthropic)
-
----
-
-## 2. Repository Structure
-
-```
-growthengine/
-├── backend/
-│   ├── src/
-│   │   ├── config/
-│   │   ├── database/
-│   │   ├── models/
-│   │   ├── controllers/
-│   │   ├── services/
-│   │   ├── routes/
-│   │   ├── middleware/
-│   │   ├── jobs/
-│   │   ├── utils/
-│   │   └── server.js
-│   └── package.json
-│
-├── frontend/
-│   ├── src/
-│   │   ├── assets/
-│   │   ├── components/
-│   │   ├── layouts/
-│   │   ├── pages/
-│   │   ├── contexts/
-│   │   ├── hooks/
-│   │   ├── services/
-│   │   ├── styles/
-│   │   └── utils/
-│   └── package.json
-│
-└── docs/
-```
+### 3. Data Model Improvements
+- [ ] Separate tables:
+  - events (raw user/system actions)
+  - insights (AI interpretations)
+  - missions (actionable tasks)
+- [ ] Add mission_status (pending, active, completed, failed)
+- [ ] Add mission_priority (low, medium, high)
+- [ ] Add mission_due_date
+- [ ] Add mission_owner (user/team)
 
 ---
 
-## 3. Backend – Core Models (Must Exist)
+## 🧠 PHASE 2: AI ENGINE UPGRADE (CORE DIFFERENTIATOR)
 
-### User
+### 4. AI Recommendation Structure
+- [ ] Enforce structured output:
+  - Why this matters
+  - Exact action
+  - Expected impact
+  - Effort level
+  - Time estimate
+- [ ] Add confidence score per recommendation
+- [ ] Store AI reasoning (hidden from UI, used for audits)
 
-* id
-* email
-* passwordHash
-* role (owner/admin/member)
-* onboardingCompleted
+### 5. Mission Generator
+- [ ] Convert AI insights into executable missions
+- [ ] Allow users to accept, reject, or snooze missions
+- [ ] Track mission completion rate
+- [ ] Penalize XP for ignored missions (lightly)
 
-### Organization
-
-* id
-* name
-* plan
-* members[]
-
-### Event
-
-* userId
-* orgId
-* type
-* metadata
-* timestamp
-
-### Recommendation
-
-* orgId
-* type
-* reason
-* impactScore
-* status
-
-### Mission
-
-* orgId
-* recommendationId
-* steps[]
-* completed
-
-### Gamification
-
-* userId
-* xp
-* level
-* badges[]
-
-**TODO**
-
-* [ ] Define schemas
-* [ ] Add indexes for performance
+### 6. Feedback Loop
+- [ ] After mission completion, ask:
+  - Did this help? (Yes / No)
+  - Manual impact input (optional)
+- [ ] Feed results back into AI engine
+- [ ] Improve future recommendations per user
 
 ---
 
-## 4. Backend – Services Layer (CRITICAL)
+## 🧪 PHASE 3: EXPERIMENTATION & SCIENCE LAYER
 
-Services contain logic. Controllers stay thin.
+### 7. Experiments System (Huge Value Add)
+- [ ] Create experiments table:
+  - hypothesis
+  - metric
+  - duration
+  - expected outcome
+- [ ] Link missions to experiments
+- [ ] Auto-evaluate results after duration
+- [ ] Show “Experiment Success Rate” on dashboard
 
-### Required Services
-
-* AuthService
-* EventService
-* AnalyticsService
-* RecommendationService
-* MissionService
-* GamificationService
-* SubscriptionService
-
-**TODO**
-
-* [ ] Move all business logic into services
-* [ ] Keep controllers < 50 lines
-
----
-
-## 5. Event Tracking System
-
-### Purpose
-
-Everything in the app generates events.
-
-### Event Examples
-
-* USER_LOGIN
-* PAGE_VIEW
-* MISSION_STARTED
-* MISSION_COMPLETED
-* RECOMMENDATION_APPLIED
-
-**Flow**
-Frontend → API → EventService → DB
-
-**TODO**
-
-* [ ] Create `/events` API
-* [ ] Centralize event logging
+### 8. Growth Score
+- [ ] Calculate Growth Score based on:
+  - Mission completion
+  - Experiment success
+  - Metric improvement
+- [ ] Display trend (up/down)
+- [ ] Use score to unlock features
 
 ---
 
-## 6. AI Recommendation Engine (V1 → V2)
+## 🎮 PHASE 4: MEANINGFUL GAMIFICATION
 
-### V1: Rules-Based Engine
+### 9. XP & Levels Rework
+- [ ] Tie XP to:
+  - Completed missions
+  - Successful experiments
+  - Consistency streaks
+- [ ] Reduce XP for passive actions (page views)
+- [ ] Add streak bonuses (daily/weekly execution)
 
-Rules based on analytics:
-
-* Low activation → onboarding mission
-* Drop in engagement → reactivation mission
-
-### V2: LLM-Enhanced
-
-* Summarize trends
-* Explain insights
-* Generate mission copy
-
-**TODO**
-
-* [ ] RecommendationService rules
-* [ ] Store recommendation history
+### 10. Unlocks (Not Cosmetic)
+- [ ] Level 3: Deeper AI recommendations
+- [ ] Level 5: Experiments & hypotheses
+- [ ] Level 7: Team features
+- [ ] Level 10: Advanced analytics
 
 ---
 
-## 7. Missions System (Execution Layer)
+## 🏢 PHASE 5: B2B & TEAM FEATURES
 
-### Mission Lifecycle
+### 11. Organizations & Roles
+- [ ] Add organizations table
+- [ ] Role types:
+  - Owner
+  - Manager
+  - Contributor
+- [ ] Permission-based mission assignment
+- [ ] Org-level Growth Score
 
-1. Created (by recommendation)
-2. Started
-3. Completed
-4. Reward issued
-
-**TODO**
-
-* [ ] Mission templates
-* [ ] Completion validation
-
----
-
-## 8. Gamification Engine
-
-### Rules
-
-* XP only for meaningful actions
-* Level progression tied to impact
-
-**TODO**
-
-* [ ] XP calculation rules
-* [ ] Badge triggers
+### 12. Team Execution Dashboard
+- [ ] Show who is working on what
+- [ ] Blockers indicator
+- [ ] Mission overdue alerts
+- [ ] Weekly execution summary
 
 ---
 
-## 9. Frontend – Application State
+## 📊 PHASE 6: ANALYTICS & INTEGRATIONS
 
-### Global State
+### 13. Core Integrations (Start Simple)
+- [ ] Google Analytics (traffic & conversion)
+- [ ] Stripe (revenue events)
+- [ ] Manual CSV upload fallback
 
-* Auth
-* Organization
-* Active mission
-* Recommendations
-
-### Rule
-
-No component fetches data directly if shared.
-
-**TODO**
-
-* [ ] Context providers
-* [ ] Custom hooks per domain
+### 14. Impact Tracking
+- [ ] Before vs After metrics per mission
+- [ ] Revenue / conversion deltas
+- [ ] Visual timeline of improvements
 
 ---
 
-## 10. Frontend – Data Access Layer
+## 🧱 PHASE 7: POLISH & TRUST
 
-Create API wrappers:
+### 15. UI/UX Refinement
+- [ ] Reduce glass effects on data-heavy screens
+- [ ] Improve readability for dashboards
+- [ ] Add “Focus Mode” (distraction-free execution view)
 
-* auth.api.js
-* events.api.js
-* analytics.api.js
-* missions.api.js
-* recommendations.api.js
-
-**TODO**
-
-* [ ] Centralize API calls
-* [ ] Error handling
+### 16. Trust & Professionalism
+- [ ] Audit log for all AI decisions
+- [ ] Explainability panel (“Why the AI suggested this”)
+- [ ] Exportable reports (PDF / shareable link)
 
 ---
 
-## 11. Performance & Scaling
+## 🚀 PHASE 8: MONETIZATION & SCALE
 
-### Must-Haves
+### 17. Pricing Gates
+- [ ] Free: Limited missions/month
+- [ ] Pro: Full AI + experiments
+- [ ] Team: Organizations & analytics
+- [ ] Enterprise: Custom models + support
 
-* Pagination
-* Caching
-* Async jobs
-
-**TODO**
-
-* [ ] Redis integration
-* [ ] Background jobs
-
----
-
-## 12. Security & Reliability
-
-* JWT + refresh tokens
-* Rate limiting
-* Input validation
-* Audit logs
-
-**TODO**
-
-* [ ] Security middleware
-* [ ] Audit trail
+### 18. Performance & Scaling
+- [ ] Cache AI responses
+- [ ] Background jobs for heavy analysis
+- [ ] Rate limit AI calls per plan
 
 ---
 
-## 13. Deployment Readiness
-
-* Env separation
-* CI/CD
-* Logging
-
-**TODO**
-
-* [ ] Dockerize services
-* [ ] Production logging
+## ❌ FEATURES TO AVOID (FOR NOW)
+- ❌ Social feeds
+- ❌ Generic CRM features
+- ❌ Too many integrations early
+- ❌ Cosmetic badges without meaning
 
 ---
 
-## Final Technical Rule
+## 🧭 SUCCESS METRICS
+- Daily mission completion rate
+- Time to first successful mission
+- Experiment success %
+- Retention after 14 days
+- Revenue impact per user
 
-> If logic is not reusable, testable, or observable — refactor it.
+---
 
-This structure allows GrowthEngine to scale **technically and commercially** without rewrites.
+## 🏁 END GOAL
+GrowthEngine should feel like:
+> “A senior growth strategist sitting next to you, making sure you execute.”
 
-https://github.com/Jamal-Chak/GrowthEngine_MarketingEngine-.git
+Straight coaching notes
+
+Error: Failed to run sql query: ERROR: 42P07: relation "missions" already exists
