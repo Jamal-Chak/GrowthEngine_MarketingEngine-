@@ -15,7 +15,7 @@ export const Card = ({ children, className = '', hover = true, delay = 0 }: Card
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay }}
             whileHover={hover ? { scale: 1.02 } : undefined}
-            className={`glass rounded-2xl p-6 ${hover ? 'glass-hover cursor-pointer' : ''} ${className}`}
+            className={`glass rounded-xl p-6 ${hover ? 'glass-hover cursor-pointer' : ''} ${className}`}
         >
             {children}
         </motion.div>

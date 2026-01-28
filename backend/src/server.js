@@ -15,7 +15,12 @@ const app = express();
 
 // Middleware
 app.use(helmet());
-app.use(cors());
+app.use(cors({
+    origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -25,12 +30,15 @@ const authRoutes = require('./routes/authRoutes');
 const recommendationRoutes = require('./routes/recommendationRoutes');
 const missionRoutes = require('./routes/missionRoutes');
 const eventRoutes = require('./routes/eventRoutes');
+const onboardingRoutes = require('./routes/onboardingRoutes');
 
 // Register routes
 app.use('/api/auth', authRoutes);
 app.use('/api/recommendations', recommendationRoutes);
 app.use('/api/missions', missionRoutes);
 app.use('/api/events', eventRoutes);
+app.use('/api/onboarding', onboardingRoutes);
+app.use('/api/payments', require('./routes/paymentRoutes'));
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

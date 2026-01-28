@@ -13,11 +13,14 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
     const { email, password } = req.body;
+    console.log(`[AUTH] Login attempt for: ${email}`);
 
     try {
         const user = await AuthService.login(email, password);
+        console.log(`[AUTH] Login successful for: ${email}`);
         res.json(user);
     } catch (error) {
+        console.error(`[AUTH] Login failed for ${email}:`, error.message);
         res.status(401).json({ message: error.message });
     }
 };

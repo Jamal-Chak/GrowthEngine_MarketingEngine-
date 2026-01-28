@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { LogIn, Mail, Lock } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card } from '@/components/ui/Card';
@@ -15,7 +15,7 @@ export default function LoginPage() {
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
-    const router = useRouter();
+    const { login } = useAuth();
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -23,17 +23,37 @@ export default function LoginPage() {
         setError('');
 
         try {
-            const { data, error: signInError } = await supabase.auth.signInWithPassword({
+            // Use Supabase authentication
+            const { supabase } = await import('@/lib/supabase');
+
+            const { data, error } = await supabase.auth.signInWithPassword({
                 email,
                 password,
             });
 
-            if (signInError) throw signInError;
-
-            if (data.session) {
-                router.push('/dashboard');
+            if (error) {
+                throw new Error(error.message);
             }
+
+            if (!data.user) {
+                throw new Error('Login failed - no user data returned');
+            }
+
+            // Create user object from Supabase data
+            const userData = {
+                _id: data.user.id,
+                name: data.user.user_metadata?.name || email.split('@')[0],
+                email: data.user.email!,
+                company: data.user.user_metadata?.company,
+                role: data.user.user_metadata?.role || 'user'
+            };
+
+            // Use the login function from AuthContext to set user and token
+            login(data.session?.access_token || '', userData);
+
+            // Redirect is handled by login() function
         } catch (err: any) {
+            console.error('Login error:', err);
             setError(err.message || 'Login failed. Please try again.');
         } finally {
             setIsLoading(false);
@@ -89,7 +109,7 @@ export default function LoginPage() {
                             <motion.div
                                 initial={{ opacity: 0, y: -10 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                className="p-4 bg-red-500/10 border border-red-500/50 rounded-xl text-red-400 text-sm"
+                                className="p-4 bg-danger-500/10 border border-danger-500/50 rounded-xl text-danger-500 text-sm"
                             >
                                 {error}
                             </motion.div>

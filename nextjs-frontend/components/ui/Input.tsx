@@ -26,7 +26,7 @@ export const Input = ({ label, icon, error, className = '', ...props }: InputPro
                 />
             </div>
             {error && (
-                <p className="text-sm text-red-400 mt-1">{error}</p>
+                <p className="text-sm text-danger-500 mt-1">{error}</p>
             )}
         </div>
     );

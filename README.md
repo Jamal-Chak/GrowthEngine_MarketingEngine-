@@ -1,171 +1,95 @@
-# GrowthEngine
+# GrowthEngine - AI-Powered Marketing Platform
 
-**AI-Powered Growth Platform for Modern Teams**
+GrowthEngine is a comprehensive, gamified marketing growth platform that helps businesses turn their analytics data into actionable revenue-generating missions. It features AI-driven recommendations, team leaderboards, and a complete mission management system.
 
-A production-ready SaaS application with beautiful UI, Supabase authentication, and gamified growth tracking.
+![GrowthEngine Banner](https://via.placeholder.com/1200x400?text=GrowthEngine+Platform)
 
-## 🚀 Quick Start (5 Minutes)
+## 🚀 Features
 
-**See [QUICKSTART.md](./QUICKSTART.md) for the fastest way to get running!**
+*   **AI-Powered Missions:** Get 3 high-impact tasks weekly based on your specific metrics.
+*   **Gamification:** Earn XP, level up, and unlock badges for completing growth tasks.
+*   **Team Leaderboards:** Compete with team members to drive engagement.
+*   **Analytics Dashboard:** Visualize trends and measure the impact of your actions.
+*   **Monetization:** Integrated subscription system with Flutterwave payments.
+*   **Secure Authentication:** Custom JWT-based auth with rate limiting and security headers.
 
-## Features
+## 🛠️ Tech Stack
 
-✨ **Modern, Premium UI**
-- Glassmorphism design
-- Smooth animations with Framer Motion
-- Responsive and mobile-friendly
-- Dark mode optimized
+*   **Frontend:** Next.js 14, TypeScript, Tailwind CSS, Framer Motion
+*   **Backend:** Node.js, Express, MongoDB, JWT
+*   **Payments:** Flutterwave API
+*   **Deployment:** Vercel (Frontend) + Railway (Backend)
 
-🔐 **Production-Ready Authentication**
-- Powered by Supabase
-- Secure password hashing
-- Session management
-- Email verification (optional)
+## 🏁 Getting Started
 
-📊 **Growth Dashboard**
-- Real-time analytics
-- AI-powered recommendations
-- Gamification (XP, levels, missions)
-- Interactive charts
+### Prerequisites
 
-## Tech Stack
+*   Node.js v18+
+*   MongoDB Atlas Account
+*   Flutterwave Account (Test keys)
 
-### Frontend (Next.js)
-- **Framework**: Next.js 15 with App Router
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **Animations**: Framer Motion
-- **Charts**: Recharts
-- **Icons**: Lucide React
-- **Auth**: Supabase
+### Installation
 
-### Backend (Node.js)
-- **Framework**: Express
-- **Database**: Supabase (PostgreSQL)
-- **Authentication**: Supabase Auth
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/your-username/growthengine.git
+    cd growthengine
+    ```
 
-## Prerequisites
+2.  **Setup Backend**
+    ```bash
+    cd backend
+    npm install
+    cp .env.example .env # Fill in your MONGO_URI and JWT_SECRET
+    npm run dev
+    ```
 
-- Node.js 18+ installed
-- A free Supabase account (https://supabase.com)
+3.  **Setup Frontend**
+    ```bash
+    cd ../nextjs-frontend
+    npm install
+    # Create .env.local with: NEXT_PUBLIC_API_URL=http://localhost:5000
+    npm run dev
+    ```
 
-## Setup
+4.  **Visit App**
+    Open [http://localhost:3000](http://localhost:3000)
 
-### 1. Clone and Install
-
-```bash
-# Install frontend dependencies
-cd nextjs-frontend
-npm install
-
-# Install backend dependencies (optional for now)
-cd ../backend
-npm install
-```
-
-### 2. Configure Supabase
-
-1. Create a free account at https://supabase.com
-2. Create a new project
-3. Copy your Project URL and Anon Key from Settings → API
-4. Create `nextjs-frontend/.env.local`:
-
-```env
-NEXT_PUBLIC_SUPABASE_URL=your_project_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
-```
-
-### 3. Run the App
-
-```bash
-# Frontend (required)
-cd nextjs-frontend
-npm run dev
-```
-
-Open http://localhost:3000 and start using the app!
-
-## Project Structure
-
-```
-GrowthEngine/
-├── nextjs-frontend/          # Next.js frontend application
-│   ├── app/                  # App router pages
-│   │   ├── page.tsx         # Login page
-│   │   ├── register/        # Registration page
-│   │   └── dashboard/       # Dashboard page
-│   ├── lib/                 # Utilities
-│   │   └── supabase.ts      # Supabase client
-│   └── .env.local           # Environment variables
-│
-├── backend/                  # Express backend (optional)
-│   ├── src/
-│   │   ├── controllers/     # Route controllers
-│   │   ├── models/          # Data models
-│   │   ├── services/        # Business logic
-│   │   └── routes/          # API routes
-│   └── package.json
-│
-├── QUICKSTART.md            # 5-minute setup guide
-└── README.md                # This file
-```
-
-## Development
-
-### Frontend Development
-```bash
-cd nextjs-frontend
-npm run dev          # Start dev server
-npm run build        # Build for production
-npm run start        # Start production server
-```
-
-### Backend Development (Optional)
-```bash
-cd backend
-npm run dev          # Start with nodemon
-```
-
-## Deployment
-
-### Frontend (Vercel - Recommended)
-1. Push your code to GitHub
-2. Import project in Vercel
-3. Add environment variables
-4. Deploy!
+## 🌍 Deployment
 
 ### Backend (Railway/Render)
-1. Push to GitHub
-2. Connect to Railway or Render
-3. Add environment variables
-4. Deploy!
+1.  Connect your repo.
+2.  Set Root Directory to `backend`.
+3.  Add Environment Variables: `MONGO_URI`, `JWT_SECRET`, `FLW_PUBLIC_KEY`, `FLW_SECRET_KEY`.
+4.  Deploy.
 
-## Environment Variables
+### Frontend (Vercel)
+1.  Connect your repo.
+2.  Set Root Directory to `nextjs-frontend`.
+3.  Add Environment Variable: `NEXT_PUBLIC_API_URL` (Your Railway backend URL).
+4.  Deploy.
 
-### Frontend (.env.local)
-```env
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
-```
+## 📁 Project Structure
 
-## Features Roadmap
+*   `/backend`: Node.js/Express API
+    *   `/src/controllers`: Request handlers
+    *   `/src/models`: Mongoose schemas
+    *   `/src/routes`: API endpoints
+    *   `/src/services`: Business logic (Payment, AI, Subscription)
+*   `/nextjs-frontend`: Next.js App Router
+    *   `/app`: Pages and Layouts
+    *   `/components`: Reusable UI components
+    *   `/context`: Global state (Auth)
+    *   `/lib`: Utilities and helpers
 
-- [x] Authentication (Login/Register)
-- [x] Modern UI with animations
-- [x] Dashboard layout
-- [ ] User profiles in Supabase
-- [ ] Missions system
-- [ ] Recommendations engine
-- [ ] Team collaboration
-- [ ] Analytics tracking
-- [ ] Gamification (XP, badges, levels)
+## 🤝 Contributing
 
-## Support
+1.  Fork the Project
+2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4.  Push to the Branch (`git push origin feature/AmazingFeature`)
+5.  Open a Pull Request
 
-For issues or questions, check:
-- [QUICKSTART.md](./QUICKSTART.md) - Quick setup guide
-- [SUPABASE_SETUP.md](./SUPABASE_SETUP.md) - Detailed Supabase guide
+## 📄 License
 
-## License
-
-MIT
+Distributed under the MIT License. See `LICENSE` for more information.

@@ -107,12 +107,16 @@ export default function Dashboard() {
     };
 
     if (loading) return (
-        <div className="min-h-screen flex items-center justify-center">
-            <motion.div
-                className="w-16 h-16 border-4 border-primary-500/30 border-t-primary-500 rounded-full"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-            />
+        <div className="min-h-screen p-8 max-w-7xl mx-auto space-y-8">
+            <div className="h-20 w-1/3 bg-white/5 rounded-xl animate-pulse" />
+            <div className="h-64 w-full bg-white/5 rounded-2xl animate-pulse" />
+            <div className="grid lg:grid-cols-3 gap-6">
+                <div className="lg:col-span-2 h-64 bg-white/5 rounded-2xl animate-pulse" />
+                <div className="space-y-6">
+                    <div className="h-24 bg-white/5 rounded-xl animate-pulse" />
+                    <div className="h-24 bg-white/5 rounded-xl animate-pulse" />
+                </div>
+            </div>
         </div>
     );
 
@@ -139,17 +143,54 @@ export default function Dashboard() {
                     <p className="text-white/60">Here&apos;s what&apos;s happening with your growth today</p>
                 </div>
 
-                {/* Stats Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    {displayStats.map((stat, i) => (
-                        <StatCard key={i} {...stat} delay={i * 0.1} />
-                    ))}
+                {/* Primary Focus Section */}
+                <div className="mb-8">
+                    <Card className="bg-gradient-to-br from-primary-500/10 to-accent-500/10 border-primary-500/20">
+                        {missions.length > 0 ? (
+                            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                                <div className="space-y-4 max-w-2xl">
+                                    <div className="flex items-center gap-2">
+                                        <span className="px-3 py-1 rounded-full bg-primary-500/20 text-primary-300 text-xs font-bold uppercase tracking-wider">
+                                            High Priority
+                                        </span>
+                                        <h2 className="text-sm font-medium text-white/50">Your Next Best Action</h2>
+                                    </div>
+                                    <h3 className="text-3xl font-bold text-white leading-tight">
+                                        {missions[0].title}
+                                    </h3>
+                                    <p className="text-lg text-white/70">
+                                        {missions[0].description || "Complete this mission to unlock 100 XP and improve your growth metrics."}
+                                    </p>
+                                </div>
+                                <div className="flex-shrink-0">
+                                    <button
+                                        className="btn-primary text-lg px-8 py-4 shadow-xl shadow-primary-500/20"
+                                        onClick={() => router.push(`/missions/${missions[0].id}`)}
+                                    >
+                                        Start Mission
+                                    </button>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="text-center py-12">
+                                <h3 className="text-2xl font-bold mb-2">All caught up!</h3>
+                                <p className="text-white/60 mb-6">Great job. Generate a new strategy to get more missions.</p>
+                                <button onClick={handleGenerateStrategy} className="btn-primary">
+                                    Generate Strategy
+                                </button>
+                            </div>
+                        )}
+                    </Card>
                 </div>
 
-                {/* Charts */}
-                <div className="grid lg:grid-cols-2 gap-6 mb-8">
-                    <Card delay={0.2}>
-                        <h3 className="text-xl font-bold mb-6">Activity Overview</h3>
+                {/* Secondary Metrics & Active Missions */}
+                <div className="grid lg:grid-cols-3 gap-6">
+                    {/* Activity Chart (Context) */}
+                    <Card className="lg:col-span-2">
+                        <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
+                            <Zap className="w-5 h-5 text-yellow-400" />
+                            Growth Trend
+                        </h3>
                         <ResponsiveContainer width="100%" height={250}>
                             <AreaChart data={MOCK_CHART_DATA}>
                                 <defs>
@@ -158,127 +199,57 @@ export default function Dashboard() {
                                         <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0} />
                                     </linearGradient>
                                 </defs>
-                                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-                                <XAxis dataKey="name" stroke="rgba(255,255,255,0.5)" />
-                                <YAxis stroke="rgba(255,255,255,0.5)" />
+                                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                                <XAxis dataKey="name" stroke="rgba(255,255,255,0.3)" fontSize={12} tickLine={false} axisLine={false} />
+                                <YAxis stroke="rgba(255,255,255,0.3)" fontSize={12} tickLine={false} axisLine={false} />
                                 <Tooltip
                                     contentStyle={{
-                                        backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                                        backgroundColor: 'rgba(15, 23, 42, 0.95)',
                                         border: '1px solid rgba(255,255,255,0.1)',
-                                        borderRadius: '12px',
+                                        borderRadius: '8px',
+                                        boxShadow: '0 4px 20px rgba(0,0,0,0.5)'
                                     }}
                                 />
-                                <Area type="monotone" dataKey="value" stroke="#0ea5e9" fillOpacity={1} fill="url(#colorValue)" />
+                                <Area type="monotone" dataKey="value" stroke="#0ea5e9" strokeWidth={2} fillOpacity={1} fill="url(#colorValue)" />
                             </AreaChart>
                         </ResponsiveContainer>
                     </Card>
 
-                    <Card delay={0.3}>
-                        <h3 className="text-xl font-bold mb-6">XP Progress</h3>
-                        <ResponsiveContainer width="100%" height={250}>
-                            <LineChart data={MOCK_CHART_DATA}>
-                                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-                                <XAxis dataKey="name" stroke="rgba(255,255,255,0.5)" />
-                                <YAxis stroke="rgba(255,255,255,0.5)" />
-                                <Tooltip
-                                    contentStyle={{
-                                        backgroundColor: 'rgba(15, 23, 42, 0.9)',
-                                        border: '1px solid rgba(255,255,255,0.1)',
-                                        borderRadius: '12px',
-                                    }}
-                                />
-                                <Line type="monotone" dataKey="value" stroke="#d946ef" strokeWidth={3} dot={{ fill: '#d946ef', r: 6 }} />
-                            </LineChart>
-                        </ResponsiveContainer>
-                    </Card>
+                    {/* Quick Stats (Context) */}
+                    <div className="space-y-6">
+                        <StatCard
+                            label="Total XP"
+                            value={stats?.xp || 0}
+                            icon={<Zap className="w-5 h-5 text-yellow-400" />}
+                            trend="+15%"
+                        />
+                        <Card>
+                            <h3 className="text-sm font-medium text-white/50 mb-4">Current Level</h3>
+                            <div className="flex items-end gap-2 mb-2">
+                                <span className="text-3xl font-bold">{stats?.level || 1}</span>
+                                <span className="text-sm text-white/40 mb-1">Beginner</span>
+                            </div>
+                            <div className="w-full bg-white/10 rounded-full h-1.5">
+                                <div className="bg-primary-500 h-1.5 rounded-full" style={{ width: '45%' }} />
+                            </div>
+                        </Card>
+                    </div>
                 </div>
 
-                {/* Recommendations & Missions */}
-                <div className="grid lg:grid-cols-2 gap-6">
-                    <Card delay={0.4}>
-                        <div className="flex items-center justify-between mb-6">
-                            <h3 className="text-xl font-bold flex items-center gap-2">
-                                <Zap className="w-6 h-6 text-yellow-400" />
-                                AI Recommendations
-                            </h3>
-                            <button
-                                onClick={handleGenerateStrategy}
-                                disabled={isGenerating}
-                                className="btn-primary text-xs py-2 px-4 flex items-center gap-2"
-                            >
-                                {isGenerating ? (
-                                    <>
-                                        <motion.div
-                                            className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full"
-                                            animate={{ rotate: 360 }}
-                                            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                                        />
-                                        Analyzing...
-                                    </>
-                                ) : (
-                                    <>
-                                        <Zap className="w-3 h-3" />
-                                        Generate New
-                                    </>
-                                )}
-                            </button>
-                        </div>
-                        <div className="space-y-4 max-h-[400px] overflow-auto pr-2 custom-scrollbar">
-                            {recommendations.length === 0 ? (
-                                <div className="text-center py-8 text-white/40 italic">
-                                    No recommendations yet. Click generate to start.
+                {/* Hidden / Deprioritized Recommendations */}
+                {recommendations.length > 0 && (
+                    <div className="mt-8 opacity-50 hover:opacity-100 transition-opacity">
+                        <h4 className="text-sm font-medium text-white/30 uppercase tracking-widest mb-4">Pending Insights</h4>
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {recommendations.slice(0, 3).map((rec, i) => (
+                                <div key={i} className="p-4 rounded-xl border border-white/5 bg-white/5">
+                                    <div className="text-sm font-medium mb-1">{rec.type}</div>
+                                    <div className="text-xs text-white/50">{rec.reason}</div>
                                 </div>
-                            ) : recommendations.map((rec, i) => (
-                                <motion.div
-                                    key={i}
-                                    initial={{ opacity: 0, x: -20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: i * 0.1 }}
-                                    whileHover={{ scale: 1.02 }}
-                                    className="p-4 glass glass-hover rounded-xl cursor-pointer"
-                                >
-                                    <div className="flex justify-between items-start mb-1">
-                                        <div className="font-semibold">{rec.type}</div>
-                                        <div className={`text-[10px] px-2 py-0.5 rounded-full ${rec.impact_score > 7 ? 'bg-green-500/20 text-green-400' : 'bg-yellow-500/20 text-yellow-400'
-                                            }`}>
-                                            Impact: {rec.impact_score}/10
-                                        </div>
-                                    </div>
-                                    <div className="text-sm text-white/60">{rec.reason}</div>
-                                </motion.div>
                             ))}
                         </div>
-                    </Card>
-
-                    <Card delay={0.5}>
-                        <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
-                            <Target className="w-6 h-6 text-green-400" />
-                            Active Missions (Real Data)
-                        </h3>
-                        <div className="space-y-4">
-                            {missions.length === 0 ? (
-                                <div className="text-white/60 text-center py-4">No active missions found.</div>
-                            ) : missions.map((mission, i) => (
-                                <motion.div
-                                    key={i}
-                                    whileHover={{ scale: 1.02 }}
-                                    className="p-4 glass glass-hover rounded-xl cursor-pointer"
-                                >
-                                    <div className="font-semibold mb-2">{mission.title}</div>
-                                    <div className="w-full bg-white/10 rounded-full h-2 mb-2">
-                                        <div
-                                            className="bg-gradient-to-r from-green-500 to-emerald-500 h-2 rounded-full"
-                                            style={{ width: `${(mission.completed_steps / mission.total_steps) * 100}%` }}
-                                        />
-                                    </div>
-                                    <div className="text-xs text-white/60">
-                                        {mission.completed_steps} / {mission.total_steps} steps completed
-                                    </div>
-                                </motion.div>
-                            ))}
-                        </div>
-                    </Card>
-                </div>
+                    </div>
+                )}
             </main>
         </div>
     );

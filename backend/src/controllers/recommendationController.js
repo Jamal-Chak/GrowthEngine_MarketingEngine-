@@ -1,26 +1,25 @@
 const RecommendationService = require('../services/RecommendationService');
 
-const getRecommendations = async (req, res) => {
+exports.getRecommendations = async (req, res) => {
     try {
-        // Use orgId from query or default to 'default-org' for development
-        const orgId = req.query.orgId || 'default-org';
+        const { userId } = req.query;
+        if (!userId) return res.status(400).json({ error: 'UserId required' });
 
-        console.log(`Fetching recommendations for orgId: ${orgId}`);
-
-        const recommendations = await RecommendationService.generateRecommendations(orgId);
-
-        res.json({
-            success: true,
-            data: recommendations,
-            count: recommendations.length
-        });
+        const data = await RecommendationService.getForUser(userId);
+        res.json(data);
     } catch (error) {
-        console.error('Error in getRecommendations:', error);
-        res.status(500).json({
-            success: false,
-            message: error.message || 'Failed to fetch recommendations'
-        });
+        res.status(500).json({ error: error.message });
     }
 };
 
-module.exports = { getRecommendations };
+exports.generateRecommendations = async (req, res) => {
+    try {
+        const { userId } = req.body;
+        if (!userId) return res.status(400).json({ error: 'UserId required' });
+
+        const data = await RecommendationService.generateForUser(userId);
+        res.json(data);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};

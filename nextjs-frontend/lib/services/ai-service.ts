@@ -13,52 +13,41 @@ export interface Recommendation {
 export const AIService = {
     /**
      * Generates a new marketing strategy/recommendation for the user.
-     * In a real app, this would call an LLM. Here we use a high-fidelity template engine.
      */
     async generateStrategy(): Promise<Recommendation[]> {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) throw new Error('User not authenticated');
 
-        await EventService.trackEvent('ai_generate_strategy');
-
-        // Simulate AI thinking time
-        await new Promise(resolve => setTimeout(resolve, 2000));
-
-        const strategies: Recommendation[] = [
-            {
-                type: 'SEO Optimization',
-                reason: 'Based on your recent traffic, optimizing your meta tags for "growth marketing" could increase reach by 15%.',
-                impact_score: 8,
-                status: 'pending'
+        const response = await fetch('http://localhost:5000/api/recommendations/generate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
             },
-            {
-                type: 'Email Campaign',
-                reason: 'Your retention rate is 5% below average. A 3-day welcome sequence is recommended.',
-                impact_score: 9,
-                status: 'pending'
-            }
-        ];
+            body: JSON.stringify({ userId: user.id }),
+        });
 
-        // Persist to Supabase
-        const { data, error } = await supabase
-            .from('recommendations')
-            .insert(strategies.map(s => ({ ...s, user_id: user.id })))
-            .select();
+        if (!response.ok) {
+            throw new Error('Failed to generate strategy');
+        }
 
-        if (error) throw error;
-        return data;
+        const result = await response.json();
+        return result || [];
     },
 
     /**
      * Fetch existing recommendations
      */
     async getRecommendations(): Promise<Recommendation[]> {
-        const { data, error } = await supabase
-            .from('recommendations')
-            .select('*')
-            .order('created_at', { ascending: false });
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return [];
 
-        if (error) throw error;
-        return data || [];
+        const response = await fetch(`http://localhost:5000/api/recommendations?userId=${user.id}`);
+
+        if (!response.ok) {
+            console.error('Failed to fetch recommendations');
+            return [];
+        }
+
+        return await response.json();
     }
 };

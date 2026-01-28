@@ -2,10 +2,12 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { UserPlus, Mail, Lock, User } from 'lucide-react';
+import { UserPlus, Mail, Lock, User, LogIn } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/context/AuthContext';
+import { Input } from '@/components/ui/Input';
+import { Button } from '@/components/ui/Button';
 
 export default function RegisterPage() {
     const [formData, setFormData] = useState({
@@ -18,45 +20,63 @@ export default function RegisterPage() {
     const [success, setSuccess] = useState(false);
     const router = useRouter();
 
+    const { login } = useAuth();
+
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
         setError('');
 
         try {
-            const { data, error: signUpError } = await supabase.auth.signUp({
+            // Use Supabase authentication
+            const { supabase } = await import('@/lib/supabase');
+
+            const { data, error } = await supabase.auth.signUp({
                 email: formData.email,
                 password: formData.password,
                 options: {
                     data: {
-                        full_name: formData.name,
-                    },
-                },
+                        name: formData.name,
+                        role: 'user'
+                    }
+                }
             });
 
-            if (signUpError) throw signUpError;
+            if (error) {
+                throw new Error(error.message);
+            }
 
+            if (!data.user) {
+                throw new Error('Registration failed - no user data returned');
+            }
+
+            // Check if email confirmation is required
             if (data.session) {
+                // User is logged in immediately (email confirmation disabled)
+                const userData = {
+                    _id: data.user.id,
+                    name: formData.name,
+                    email: data.user.email!,
+                    role: 'user'
+                };
+
+                login(data.session.access_token, userData);
                 router.push('/onboarding');
             } else {
                 // Email confirmation required
-                setError('');
-                setIsLoading(false);
                 setSuccess(true);
             }
+
         } catch (err: any) {
             console.error('Registration error:', err);
-            let errorMessage = err.message || 'Registration failed. Please try again.';
-
-            // Map common Supabase errors to user-friendly messages
-            if (errorMessage.toLowerCase().includes('email address') && errorMessage.toLowerCase().includes('invalid')) {
-                errorMessage = 'This email address is invalid or not allowed. Please use a standard email provider (e.g. Gmail) and avoid "test" or "example" domains.';
-            }
-
-            setError(errorMessage);
+            setError(err.message || 'Registration failed. Please try again.');
         } finally {
             setIsLoading(false);
         }
+    };
+
+    const validateEmail = (email: string) => {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     };
 
     return (
@@ -117,81 +137,65 @@ export default function RegisterPage() {
                                     <motion.div
                                         initial={{ opacity: 0, y: -10 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        className="p-4 bg-red-500/10 border border-red-500/50 rounded-xl text-red-400 text-sm"
+                                        className="p-4 bg-danger-500/10 border border-danger-500/50 rounded-xl text-danger-500 text-sm"
                                     >
                                         {error}
                                     </motion.div>
                                 )}
 
-                                <div className="space-y-2">
-                                    <label className="block text-sm font-medium text-white/80">Full Name</label>
-                                    <div className="relative">
-                                        <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
-                                        <input
-                                            type="text"
-                                            placeholder="John Doe"
-                                            value={formData.name}
-                                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                            className="input-field pl-12"
-                                            required
-                                        />
-                                    </div>
+                                <div className="space-y-4">
+                                    <Input
+                                        label="Full Name"
+                                        icon={<User className="w-5 h-5" />}
+                                        type="text"
+                                        placeholder="John Doe"
+                                        value={formData.name}
+                                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                        required
+                                    />
+
+                                    <Input
+                                        label="Email Address"
+                                        icon={<Mail className="w-5 h-5" />}
+                                        type="email"
+                                        placeholder="you@example.com"
+                                        value={formData.email}
+                                        onChange={(e) => {
+                                            setFormData({ ...formData, email: e.target.value });
+                                            if (e.target.value && !validateEmail(e.target.value)) {
+                                                // We could set a local field error here if we wanted strictly inline, 
+                                                // for now we rely on browser 'type=email' and submit validation,
+                                                // but using Input component gives us the structure.
+                                            }
+                                        }}
+                                        required
+                                    />
+
+                                    <Input
+                                        label="Password"
+                                        icon={<Lock className="w-5 h-5" />}
+                                        type="password"
+                                        placeholder="••••••••"
+                                        value={formData.password}
+                                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                                        required
+                                        minLength={6}
+                                        error={
+                                            formData.password && formData.password.length < 6
+                                                ? 'Password must be at least 6 characters'
+                                                : undefined
+                                        }
+                                    />
                                 </div>
 
-                                <div className="space-y-2">
-                                    <label className="block text-sm font-medium text-white/80">Email Address</label>
-                                    <div className="relative">
-                                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
-                                        <input
-                                            type="email"
-                                            placeholder="you@example.com"
-                                            value={formData.email}
-                                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                            className="input-field pl-12"
-                                            required
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="space-y-2">
-                                    <label className="block text-sm font-medium text-white/80">Password</label>
-                                    <div className="relative">
-                                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
-                                        <input
-                                            type="password"
-                                            placeholder="••••••••"
-                                            value={formData.password}
-                                            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                                            className="input-field pl-12"
-                                            required
-                                            minLength={6}
-                                        />
-                                    </div>
-                                </div>
-
-                                <motion.button
+                                <Button
                                     type="submit"
-                                    disabled={isLoading}
-                                    className="w-full btn-primary flex items-center justify-center gap-2"
-                                    whileHover={{ scale: 1.02 }}
-                                    whileTap={{ scale: 0.98 }}
+                                    isLoading={isLoading}
+                                    className="w-full"
+                                    icon={<UserPlus className="w-5 h-5" />}
                                 >
-                                    {isLoading ? (
-                                        <>
-                                            <motion.div
-                                                className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
-                                                animate={{ rotate: 360 }}
-                                                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                                            />
-                                            Creating account...
-                                        </>
-                                    ) : (
-                                        <>
-                                            <UserPlus className="w-5 h-5" />
-                                            Create Account
-                                        </>
-                                    )}
-                                </motion.button>
+                                    Create Account
+                                </Button>
                             </form>
 
                             <div className="text-center">

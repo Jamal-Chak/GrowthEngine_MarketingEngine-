@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { getRecommendations } = require('../controllers/recommendationController');
-// const { protect } = require('../middleware/authMiddleware');
+const recommendationController = require('../controllers/recommendationController');
 
-// Temporarily remove auth for development
-router.get('/', getRecommendations);
+router.get('/', recommendationController.getRecommendations);
+router.post('/generate', recommendationController.generateRecommendations);
 
 module.exports = router;

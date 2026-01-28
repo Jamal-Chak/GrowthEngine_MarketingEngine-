@@ -41,13 +41,13 @@ export default function LandingPage() {
                         className="space-y-4"
                     >
                         <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
-                            Stop Guessing. <br />
-                            <span className="text-gradient">Start Growing.</span>
+                            Turn Data Into <br />
+                            <span className="text-gradient">Revenue.</span>
                         </h1>
                         <p className="text-xl text-white/60 max-w-2xl mx-auto leading-relaxed">
-                            Your AI-powered Growth Strategist. We analyze your data to tell you exactly
+                            GrowthEngine analyzes your metrics and tells you exactly
                             <span className="text-white font-medium"> what to do next </span>
-                            to increase revenue, retention, and engagement.
+                            to increase revenue, retention, and engagement. No more guessing.
                         </p>
                     </motion.div>
 
@@ -77,6 +77,10 @@ export default function LandingPage() {
                     transition={{ delay: 0.4 }}
                     className="mt-32 grid md:grid-cols-3 gap-8"
                 >
+                    <div className="md:col-span-3 text-center mb-8">
+                        <h2 className="text-3xl font-bold mb-4">Your First 10 Minutes</h2>
+                        <p className="text-white/60">How we turn your data into a plan.</p>
+                    </div>
                     {[
                         {
                             icon: Target,
@@ -107,6 +111,6 @@ export default function LandingPage() {
                     ))}
                 </motion.div>
             </main>
-        </div>
+        </div >
     );
 }

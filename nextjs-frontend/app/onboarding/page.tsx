@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { Target, TrendingUp, Users, Database, ArrowRight, Check } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import confetti from 'canvas-confetti';
+import { supabase } from '@/lib/supabase';
 
 export default function OnboardingPage() {
     const router = useRouter();
@@ -33,10 +35,55 @@ export default function OnboardingPage() {
 
     const handleComplete = async () => {
         setLoading(true);
-        // Simulate API call to generate first mission
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        router.push('/dashboard');
+        try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) throw new Error('No user found');
+
+            const response = await fetch('http://localhost:5000/api/onboarding/complete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: user.id,
+                    businessType,
+                    growthGoal,
+                    // Team size not yet in UI, defaulting
+                    teamSize: '1-10'
+                }),
+            });
+
+            if (!response.ok) {
+                const err = await response.json();
+                throw new Error(err.error || 'Failed to complete onboarding');
+            }
+
+            // Trigger confetti
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+
+            // Wait a bit for effect
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            router.push('/dashboard');
+        } catch (error) {
+            console.error('Onboarding error:', error);
+            // Show error handling UI here if needed
+        } finally {
+            setLoading(false);
+        }
     };
+
+    // Trigger confetti when hitting step 4
+    if (step === 4 && !loading) {
+        confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 }
+        });
+    }
 
     return (
         <div className="min-h-screen flex items-center justify-center p-4">
