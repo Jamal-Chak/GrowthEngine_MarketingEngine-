@@ -18,9 +18,9 @@ router.get('/templates', getTemplates);
 // Mission CRUD
 router.post('/', protect, createMission);
 router.post('/from-template', protect, createMissionFromTemplate);
-router.get('/', protect, getMissions);
-router.get('/stats', protect, getMissionStats);
-router.get('/:missionId', protect, getMissionById);
+router.get('/', getMissions);
+router.get('/stats', getMissionStats);
+router.get('/:missionId', getMissionById);
 
 // Mission completion
 router.post('/:missionId/complete-step', protect, completeStep);

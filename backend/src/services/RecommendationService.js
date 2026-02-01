@@ -1,68 +1,89 @@
-const supabase = require('../config/supabase');
+const Insight = require('../models/Insight');
+const Event = require('../models/Event');
+const AIService = require('./AIService');
 
 class RecommendationService {
     async getForUser(userId) {
-        const { data, error } = await supabase
-            .from('insights')
-            .select('*')
-            .eq('user_id', userId)
-            .order('created_at', { ascending: false });
-
-        if (error) throw error;
-        return data;
+        try {
+            const insights = await Insight.find({ userId: userId }).sort({ createdAt: -1 });
+            return insights;
+        } catch (error) {
+            console.warn('Database error. Returning mock recommendations.', error.message);
+            return [
+                {
+                    id: 'mock-1',
+                    title: 'Complete Onboarding',
+                    description: 'Finish your profile to get better insights.',
+                    type: 'opportunity',
+                    confidence_score: 9,
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: 'mock-2',
+                    title: 'Connect Analytics',
+                    description: 'Link your Google Analytics to track growth.',
+                    type: 'suggestion',
+                    confidence_score: 7,
+                    createdAt: new Date().toISOString()
+                }
+            ];
+        }
     }
 
     async generateForUser(userId) {
-        // 1. Fetch User Context (Goal, Business Type)
-        // In a real app we'd fetch profile/org data. 
-        // For now, we'll infer or fetch recent events to see usage.
+        // 1. Fetch User Context
+        // In reality, we would fetch the User profile to get businessType/Goal.
+        // For now, we'll try to find the first mission to infer context or default to 'SaaS'.
 
-        const { data: events } = await supabase
-            .from('events')
-            .select('*')
-            .eq('user_id', userId)
-            .limit(10);
+        let context = { businessType: 'SaaS', goal: 'Growth', channel: 'LinkedIn' };
 
-        // 2. Rules Engine (Heuristic)
-        const recommendations = [];
+        // Try to infer from recent events or missions (omitted for brevity, using defaults)
 
-        // Rule A: Engagement Check
-        if (!events || events.length < 5) {
-            recommendations.push({
-                title: 'Data Blindspot Detected',
-                description: 'We are not seeing enough events to give accurate advice. Install the snippet.',
-                type: 'warning',
-                impact_score: 9,
-                action_url: '/settings/install'
-            });
+        // 2. Check Subscription Limit
+        const SubscriptionService = require('./SubscriptionService');
+        const canGenerate = await SubscriptionService.checkLimit(userId, 'aiRecommendations');
+
+        if (!canGenerate) {
+            throw new Error("You have reached your free AI strategy limit. Upgrade to Pro for unlimited strategies.");
         }
 
-        // Rule B: Always suggest "Referral" for growth (Mock logic)
-        recommendations.push({
-            title: 'Implement Referral Loop',
-            description: 'You have zero viral coefficients. Add a "Invite Team" button.',
-            type: 'opportunity',
-            impact_score: 8,
-            action_url: '/missions/referral-setup'
-        });
+        // 3. AI Generation
+        const aiStrategy = await AIService.generateMarketingStrategy(context);
 
-        // 3. Store Insights
-        const insightsToInsert = recommendations.map(rec => ({
-            user_id: userId,
-            title: rec.title,
-            description: rec.description,
-            type: rec.type,
-            confidence_score: rec.impact_score // mapping to schema
-        }));
+        // 3. Create Actionable Mission
+        // We import MissionService dynamically to avoid circular dependencies if any (though here it's fine)
+        const MissionService = require('./MissionService');
 
-        const { data: savedInsights, error } = await supabase
-            .from('insights')
-            .insert(insightsToInsert)
-            .select();
+        try {
+            const newMission = await MissionService.createMission(userId, null, aiStrategy);
 
-        if (error) throw new Error(`Failed to save insights: ${error.message}`);
+            // 4. Also store as Insight for history (Non-blocking)
+            const recommendation = {
+                userId: userId,
+                title: aiStrategy.title,
+                description: aiStrategy.description,
+                type: 'opportunity',
+                severity: aiStrategy.impactLevel || 'medium',
+                suggestedMission: `/missions/${newMission.id}`,
+                confidence_score: 8,
+                createdAt: new Date()
+            };
 
-        return savedInsights;
+            try {
+                await Insight.create(recommendation);
+            } catch (insightError) {
+                console.warn('Warning: Failed to save Insight history (Postgres/Mongo mismatch?), but Mission created.', insightError.message);
+                // Continue execution so we don't block the user
+            }
+
+            // Return specific structure for frontend to handle (or just standard insight array)
+            // But frontend expects list of recommendations. 
+            // We'll append a flag so frontend knows to reload missions.
+            return [{ ...recommendation, isNewMission: true }];
+        } catch (error) {
+            console.error('Failed to save AI mission/insight:', error);
+            throw new Error(`Failed to generate strategy: ${error.message}`);
+        }
     }
 }
 

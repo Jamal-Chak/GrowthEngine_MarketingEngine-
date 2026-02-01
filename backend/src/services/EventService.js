@@ -1,26 +1,18 @@
-const supabase = require('../config/supabase');
+const Event = require('../models/Event');
 
 class EventService {
     async track(userId, eventName, properties = {}) {
         try {
-            const { error } = await supabase
-                .from('events')
-                .insert({
-                    user_id: userId,
-                    event_type: eventName,
-                    event_data: properties,
-                    created_at: new Date().toISOString()
-                });
-
-            if (error) {
-                console.error('Event tracking failed:', error);
-                // Don't throw, analytics failures shouldn't break app flow
-                return false;
-            }
+            await Event.create({
+                userId,
+                eventType: eventName,
+                eventData: properties
+            });
 
             return true;
         } catch (err) {
-            console.error('Event Service Error:', err);
+            console.error('Event Service Error:', err.message);
+            // Ensure we never throw from here to prevent 500s in main flow
             return false;
         }
     }

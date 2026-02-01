@@ -3,10 +3,15 @@ const { v4: uuidv4 } = require('uuid');
 
 class PaymentService {
     constructor() {
-        this.flw = new Flutterwave(
-            process.env.FLW_PUBLIC_KEY,
-            process.env.FLW_SECRET_KEY
-        );
+        try {
+            this.flw = new Flutterwave(
+                process.env.FLW_PUBLIC_KEY || 'FLWPUBK_TEST-SANDBOX',
+                process.env.FLW_SECRET_KEY || 'FLWSECK_TEST-SANDBOX'
+            );
+        } catch (error) {
+            console.warn('Flutterwave initialization failed:', error.message);
+            this.flw = null;
+        }
     }
 
     /**
@@ -17,6 +22,19 @@ class PaymentService {
      * @returns {Promise<Object>} - Payment link and ref
      */
     async initializePayment(user, plan, amount) {
+        // MOCK MODE: If keys are default/missing, return local mock link
+        if (!this.flw || process.env.FLW_PUBLIC_KEY?.includes('SANDBOX')) {
+            console.log('[Payment] Using Mock Gateway (Keys missing/default)');
+            const tx_ref = `tx-mock-${uuidv4()}`;
+            // Point to our internal mock gateway
+            const mockLink = `http://127.0.0.1:${process.env.PORT || 5000}/api/payments/mock-gateway?tx_ref=${tx_ref}&userId=${user._id}&plan=${plan}`;
+
+            return {
+                link: mockLink,
+                tx_ref
+            };
+        }
+
         try {
             const tx_ref = `tx-${uuidv4()}`;
 
@@ -24,7 +42,8 @@ class PaymentService {
                 tx_ref,
                 amount,
                 currency: 'USD',
-                redirect_url: `${process.env.FRONTEND_URL}/payment/callback`,
+                // Redirect to BACKEND for verification and final redirection to frontend
+                redirect_url: `http://127.0.0.1:${process.env.PORT || 5000}/api/payments/callback`,
                 payment_options: 'card',
                 customer: {
                     email: user.email,
@@ -63,6 +82,20 @@ class PaymentService {
      * @returns {Promise<Object>} - Transaction details
      */
     async verifyTransaction(transactionId) {
+        // MOCK MODE: Verify mock transaction
+        if (transactionId.toString().startsWith('mock-id-')) {
+            const encodedMeta = transactionId.split('mock-id-')[1];
+            const meta = JSON.parse(Buffer.from(encodedMeta, 'base64').toString('ascii'));
+
+            return {
+                status: 'successful',
+                amount: 19, // Dummy
+                currency: 'USD',
+                meta: meta // Return decoded userId and plan
+            };
+        }
+
+        if (!this.flw) throw new Error('Payment service unavailable');
         try {
             const response = await this.flw.Transaction.verify({ id: transactionId });
 

@@ -15,11 +15,17 @@ exports.getRecommendations = async (req, res) => {
 exports.generateRecommendations = async (req, res) => {
     try {
         const { userId } = req.body;
-        if (!userId) return res.status(400).json({ error: 'UserId required' });
+        console.log('[RecommendationController] Generate request received for userId:', userId);
+
+        if (!userId) {
+            console.warn('[RecommendationController] Missing userId in request body');
+            return res.status(400).json({ error: 'UserId required' });
+        }
 
         const data = await RecommendationService.generateForUser(userId);
         res.json(data);
     } catch (error) {
+        console.error('Generate Recommendations Error:', error);
         res.status(500).json({ error: error.message });
     }
 };

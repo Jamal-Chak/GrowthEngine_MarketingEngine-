@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'framer-motion';
 import {
     Sparkles,
@@ -9,8 +11,7 @@ import {
     Award,
     LogOut
 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 
 interface SidebarProps {
@@ -20,6 +21,7 @@ interface SidebarProps {
 
 export const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
     const router = useRouter();
+    const pathname = usePathname();
 
     const handleLogout = async () => {
         await supabase.auth.signOut();
@@ -27,10 +29,10 @@ export const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
     };
 
     const navItems = [
-        { icon: BarChart3, label: 'Dashboard', active: true },
-        { icon: Target, label: 'Missions' },
-        { icon: Users, label: 'Team' },
-        { icon: Award, label: 'Achievements' },
+        { icon: BarChart3, label: 'Dashboard', href: '/dashboard' },
+        { icon: Target, label: 'Missions', href: '/dashboard/missions' },
+        { icon: Users, label: 'Team', href: '/dashboard/team' },
+        { icon: Award, label: 'Achievements', href: '/dashboard/achievements' },
     ];
 
     return (
@@ -61,20 +63,24 @@ export const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
             </div>
 
             <nav className="flex-1 space-y-2">
-                {navItems.map((item, i) => (
-                    <motion.button
-                        key={i}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${item.active
-                            ? 'bg-gradient-to-r from-primary-500/20 to-accent-500/20 text-white'
-                            : 'hover:bg-white/5 text-white/60'
-                            }`}
-                    >
-                        <item.icon className="w-5 h-5" />
-                        {isOpen && <span>{item.label}</span>}
-                    </motion.button>
-                ))}
+                {navItems.map((item, i) => {
+                    const isActive = pathname === item.href;
+                    return (
+                        <motion.button
+                            key={i}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => router.push(item.href)}
+                            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive
+                                ? 'bg-gradient-to-r from-primary-500/20 to-accent-500/20 text-white border border-primary-500/20'
+                                : 'hover:bg-white/5 text-white/60'
+                                }`}
+                        >
+                            <item.icon className={`w-5 h-5 ${isActive ? 'text-primary-400' : ''}`} />
+                            {isOpen && <span className={isActive ? 'font-medium' : ''}>{item.label}</span>}
+                        </motion.button>
+                    );
+                })}
             </nav>
 
             <button

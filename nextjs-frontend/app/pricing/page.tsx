@@ -3,29 +3,27 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Check, X, Shield, Zap, Users } from 'lucide-react';
-import { useAuth } from '@/context/AuthContext';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
 export default function PricingPage() {
-    const { user } = useAuth();
+    const { data: session } = useSession();
     const router = useRouter();
     const [loading, setLoading] = useState<string | null>(null);
 
     const handleUpgrade = async (plan: string) => {
-        if (!user) {
+        if (!session?.user) {
             router.push('/login');
             return;
         }
 
         setLoading(plan);
         try {
-            // Direct call to backend for simplicity in this file, or use lib/services/payment.ts
-            const token = localStorage.getItem('token');
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/payments/initialize`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'Authorization': `Bearer ${session.accessToken}`
                 },
                 body: JSON.stringify({ plan })
             });
@@ -169,8 +167,8 @@ export default function PricingPage() {
                                 onClick={() => plan.id !== 'free' ? handleUpgrade(plan.id) : null}
                                 disabled={plan.id === 'free' || loading === plan.id}
                                 className={`w-full py-3 px-6 rounded-lg font-semibold transition-all duration-200 flex items-center justify-center gap-2 ${plan.id === 'free'
-                                        ? 'bg-gray-800 text-gray-400 cursor-default'
-                                        : 'bg-white text-black hover:bg-gray-100'
+                                    ? 'bg-gray-800 text-gray-400 cursor-default'
+                                    : 'bg-white text-black hover:bg-gray-100'
                                     }`}
                             >
                                 {loading === plan.id ? (

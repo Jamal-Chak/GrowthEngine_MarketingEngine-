@@ -1,70 +1,26 @@
 const mongoose = require('mongoose');
 
+const stepSchema = new mongoose.Schema({
+    description: { type: String, required: true },
+    xpReward: { type: Number, default: 10 },
+    completed: { type: Boolean, default: false },
+    completedAt: { type: Date }
+});
+
 const missionSchema = new mongoose.Schema({
-    userId: {
-        type: String,
-        required: true,
-        index: true,
-    },
-    orgId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Organization',
-        required: true,
-    },
-    recommendationId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Recommendation',
-    },
-    title: {
-        type: String,
-        required: true,
-    },
-    description: {
-        type: String,
-        default: '',
-    },
-    category: {
-        type: String,
-        enum: ['onboarding', 'growth', 'retention', 'foundation', 'custom'],
-        default: 'custom',
-    },
-    steps: [{
-        description: {
-            type: String,
-            required: true,
-        },
-        xpReward: {
-            type: Number,
-            default: 10,
-        },
-        completed: {
-            type: Boolean,
-            default: false,
-        },
-        completedAt: {
-            type: Date,
-        },
-    }],
-    xpReward: {
-        type: Number,
-        default: 100,
-    },
-    estimatedTime: {
-        type: String,
-        default: '30 minutes',
-    },
-    impactLevel: {
-        type: String,
-        enum: ['foundation', 'low', 'medium', 'high'],
-        default: 'medium',
-    },
-    completed: {
-        type: Boolean,
-        default: false,
-    },
-    completedAt: {
-        type: Date,
-    },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    orgId: { type: mongoose.Schema.Types.ObjectId, ref: 'Organization' },
+    templateId: { type: String, required: false }, // Optional: link back to a template key
+    title: { type: String, required: true },
+    description: { type: String },
+    whyMatters: { type: String },
+    category: { type: String, enum: ['onboarding', 'growth', 'retention', 'revenue', 'traffic', 'conversion', 'foundation', 'custom'], default: 'custom' },
+    xpReward: { type: Number, default: 100 },
+    estimatedTime: { type: String },
+    impactLevel: { type: String, enum: ['low', 'medium', 'high', 'foundation'], default: 'medium' },
+    steps: [stepSchema],
+    completed: { type: Boolean, default: false },
+    completedAt: { type: Date }
 }, { timestamps: true });
 
 // Indexes for performance

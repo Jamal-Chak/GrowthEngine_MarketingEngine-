@@ -206,3 +206,23 @@ alter table public.user_missions
 -- insert into public.missions (title, description, xp_reward, total_steps) values 
 -- ('Complete Onboarding', 'Finish your profile setup', 500, 5),
 -- ('Invite Team', 'Invite 3 team members to the platform', 300, 3);
+
+-- Mission Feedback
+create table public.mission_feedback (
+  id uuid default uuid_generate_v4() primary key,
+  user_id uuid references auth.users not null,
+  mission_id uuid references public.missions not null,
+  rating boolean not null, -- true = helpful, false = not helpful
+  comment text,
+  created_at timestamp with time zone default now()
+);
+
+alter table public.mission_feedback enable row level security;
+
+create policy "Users can insert their own feedback"
+  on mission_feedback for insert
+  with check ( auth.uid() = user_id );
+
+create policy "Users can view their own feedback"
+  on mission_feedback for select
+  using ( auth.uid() = user_id );

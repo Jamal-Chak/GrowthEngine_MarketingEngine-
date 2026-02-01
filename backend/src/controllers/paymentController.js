@@ -65,7 +65,37 @@ exports.getSubscriptionFn = async (req, res) => {
     }
 };
 
-// Cancel subscription
+// Mock Gateway Page (Simulates generic payment page)
+exports.mockGateway = (req, res) => {
+    const { tx_ref, userId, plan } = req.query;
+
+    // Simulate user clicking "Pay Now" -> Redirect to Callback
+    // We encode the metadata in the transaction ID so verifyTransaction can decode it (stateless mock)
+    const meta = JSON.stringify({ userId, plan });
+    const encodedMeta = Buffer.from(meta).toString('base64');
+    const mockTransactionId = `mock-id-${encodedMeta}`;
+
+    const callbackUrl = `http://127.0.0.1:${process.env.PORT || 5000}/api/payments/callback?status=successful&transaction_id=${mockTransactionId}&tx_ref=${tx_ref}`;
+
+    // Return a simple HTML page that auto-redirects after 2 seconds
+    res.send(`
+        <html>
+            <body style="font-family: sans-serif; text-align: center; padding: 50px; background: #f0fdf4;">
+                <h1 style="color: #166534;">GrowthEngine Secure Payment (MOCK)</h1>
+                <p>Processing payment for <strong>${plan}</strong> plan...</p>
+                <div style="margin: 20px auto; width: 40px; height: 40px; border: 4px solid #166534; border-top: 4px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                <p style="color: #666;">Do not close this window.</p>
+                <script>
+                    setTimeout(() => {
+                        window.location.href = "${callbackUrl}";
+                    }, 2000);
+                </script>
+                <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
+            </body>
+        </html>
+    `);
+};
+
 exports.cancelSubscription = async (req, res) => {
     try {
         // Implementation for cancellation would go here

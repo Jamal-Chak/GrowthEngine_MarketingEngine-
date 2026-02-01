@@ -1,11 +1,26 @@
 const Mission = require('../models/Mission');
 const GamificationService = require('./GamificationService');
 
-// Mission Templates
 const MISSION_TEMPLATES = {
+    quickWin: {
+        title: 'Audit Your Digital Presence',
+        description: 'Complete this 5-minute audit to identify your biggest growth opportunities',
+        whyMatters: 'Most businesses waste months on the wrong channels. This audit reveals where YOUR customers actually are.',
+        category: 'onboarding',
+        xpReward: 100,
+        steps: [
+            { description: 'Google yourself - does your business show up in the first 3 results?', xpReward: 25 },
+            { description: 'Search your brand on social media - what do you find?', xpReward: 25 },
+            { description: 'Ask ChatGPT: "Where do [your customer type] hang out online?"', xpReward: 25 },
+            { description: 'Pick your #1 channel based on what you discovered', xpReward: 25 },
+        ],
+        estimatedTime: '5 minutes',
+        impactLevel: 'foundation',
+    },
     onboarding: {
         title: 'Complete Your Profile Setup',
         description: 'Get your account ready for growth tracking',
+        whyMatters: 'You can\'t track what you don\'t measure. This setup ensures you see real results.',
         category: 'onboarding',
         xpReward: 100,
         steps: [
@@ -46,50 +61,93 @@ const MISSION_TEMPLATES = {
         impactLevel: 'high',
     },
     analytics: {
-        title: 'Set Up Growth Analytics',
-        description: 'Track the metrics that matter',
+        title: 'Install Key Tracking Pixels',
+        description: 'Ensure you can measure every visitor and conversion.',
         category: 'foundation',
         xpReward: 120,
-        steps: [
-            { description: 'Define your key growth metrics', xpReward: 30 },
-            { description: 'Set up tracking events', xpReward: 40 },
-            { description: 'Create your first dashboard', xpReward: 30 },
-            { description: 'Schedule weekly review', xpReward: 20 },
-        ],
-        estimatedTime: '1 hour',
+        estimatedTime: '20 minutes',
         impactLevel: 'foundation',
+        steps: [
+            { description: 'List your top 3 conversion events (e.g. Purchase, Lead)', xpReward: 30 },
+            { description: 'Install GA4 or Meta Pixel on your site', xpReward: 40 },
+            { description: 'Verify traffic is being received in real-time', xpReward: 30 },
+            { description: 'Add a calendar reminder for Weekly Metrics Review', xpReward: 20 },
+        ],
     },
     retention: {
-        title: 'Improve Customer Retention',
-        description: 'Keep your existing customers engaged',
+        title: 'Launch a Win-Back Campaign',
+        description: 'Re-engage customers who haven\'t visited in 90 days.',
         category: 'retention',
         xpReward: 180,
-        steps: [
-            { description: 'Analyze churn reasons', xpReward: 40 },
-            { description: 'Create win-back campaign', xpReward: 50 },
-            { description: 'Set up customer success check-ins', xpReward: 50 },
-            { description: 'Launch loyalty program', xpReward: 40 },
-        ],
-        estimatedTime: '2 hours',
+        estimatedTime: '45 minutes',
         impactLevel: 'high',
+        steps: [
+            { description: 'Identify customers inactive for 90+ days', xpReward: 40 },
+            { description: 'Draft a "We Miss You" email with a small offer', xpReward: 50 },
+            { description: 'Set up the campaign in your email tool', xpReward: 50 },
+            { description: 'Schedule for delivery tomorrow morning', xpReward: 40 },
+        ],
+    },
+
+    revenue_growth_1: {
+        title: 'Launch a 48-Hour Flash Sale',
+        description: 'Generate immediate cash flow with a time-bound offer.',
+        whyMatters: 'Urgency-driven offers convert 3-5x better than standard promotions. Get quick revenue without long campaigns.',
+        category: 'revenue',
+        xpReward: 300,
+        estimatedTime: '45 minutes',
+        impactLevel: 'high',
+        steps: [
+            { description: 'Select one product/service to discount (20%+)', xpReward: 50 },
+            { description: 'Draft email subject: "48 Hours Only: [Offer]"', xpReward: 50 },
+            { description: 'Send email to your existing list', xpReward: 100 },
+            { description: 'Post offer on your main social channel', xpReward: 100 },
+        ],
+    },
+    traffic_growth_1: {
+        title: 'Repurpose Top Content',
+        description: 'Drive traffic without creating new content from scratch.',
+        whyMatters: 'Your best content already exists. Repurposing it gets 10x more reach with 1/10th the effort.',
+        category: 'traffic',
+        xpReward: 250,
+        estimatedTime: '30 minutes',
+        impactLevel: 'medium',
+        steps: [
+            { description: 'Identify top performing post from last 90 days', xpReward: 50 },
+            { description: 'Convert key points into a social thread/carousel', xpReward: 100 },
+            { description: 'Post with link back to original content', xpReward: 50 },
+            { description: 'Share link in one relevant community/group', xpReward: 50 },
+        ],
+    },
+    conversion_opt_1: {
+        title: 'Add "Risk Reversal" to Signup',
+        description: 'Increase conversion rate by removing friction.',
+        whyMatters: 'Fear of commitment kills conversions. One simple phrase can boost signups by 30-50%.',
+        category: 'conversion',
+        xpReward: 200,
+        estimatedTime: '15 minutes',
+        impactLevel: 'high',
+        steps: [
+            { description: 'Review your main Call-to-Action area', xpReward: 40 },
+            { description: 'Add text: "No credit card required" or "Cancel anytime"', xpReward: 80 },
+            { description: 'Verify signup flow works on mobile', xpReward: 40 },
+            { description: 'Check that welcome email arrives within 1 min', xpReward: 40 },
+        ],
     },
 };
 
 class MissionService {
-    /**
-     * Create a mission from a template
-     */
     async createMissionFromTemplate(userId, orgId, templateKey, customData = {}) {
         const template = MISSION_TEMPLATES[templateKey];
-        if (!template) {
-            throw new Error(`Mission template '${templateKey}' not found`);
-        }
+        if (!template) throw new Error(`Mission template '${templateKey}' not found`);
 
-        const mission = await Mission.create({
-            userId,
-            orgId,
+        const missionData = {
+            userId: userId,
+            orgId: orgId,
+            templateId: templateKey,
             title: customData.title || template.title,
             description: customData.description || template.description,
+            whyMatters: customData.whyMatters || template.whyMatters || '',
             category: template.category,
             steps: template.steps.map(step => ({
                 description: step.description,
@@ -99,19 +157,17 @@ class MissionService {
             xpReward: template.xpReward,
             estimatedTime: template.estimatedTime,
             impactLevel: template.impactLevel,
-            completed: false,
-        });
+            completed: false
+        };
 
-        return mission;
+        const mission = await Mission.create(missionData);
+        return this._transformMission(mission);
     }
 
-    /**
-     * Create a custom mission
-     */
     async createMission(userId, orgId, missionData) {
-        const mission = await Mission.create({
-            userId,
-            orgId,
+        const newMission = {
+            userId: userId,
+            orgId: orgId,
             title: missionData.title,
             description: missionData.description,
             category: missionData.category || 'custom',
@@ -123,86 +179,81 @@ class MissionService {
             xpReward: missionData.xpReward || 100,
             estimatedTime: missionData.estimatedTime,
             impactLevel: missionData.impactLevel || 'medium',
-            completed: false,
-        });
+            completed: false
+        };
 
-        return mission;
+        const mission = await Mission.create(newMission);
+        return this._transformMission(mission);
     }
 
-    /**
-     * Get all missions for a user/organization
-     */
     async getMissions(userId, filters = {}) {
-        const query = { userId };
+        try {
+            const query = { userId: userId };
 
-        if (filters.completed !== undefined) {
-            query.completed = filters.completed;
+            if (filters.completed !== undefined) {
+                query.completed = filters.completed === 'true';
+            }
+            if (filters.category) {
+                query.category = filters.category;
+            }
+
+            const missions = await Mission.find(query).sort({ createdAt: -1 });
+            return missions.map(m => this._transformMission(m));
+
+        } catch (error) {
+            console.error('Mission DB error:', error);
+            // Return empty array instead of throwing to prevent crashing UI
+            return [];
         }
-
-        if (filters.category) {
-            query.category = filters.category;
-        }
-
-        return await Mission.find(query).sort({ createdAt: -1 });
     }
 
-    /**
-     * Get a single mission by ID
-     */
     async getMissionById(missionId, userId) {
-        const mission = await Mission.findOne({ _id: missionId, userId });
-        if (!mission) {
-            throw new Error('Mission not found');
-        }
-        return mission;
+        const mission = await Mission.findOne({ _id: missionId, userId: userId });
+        if (!mission) throw new Error('Mission not found');
+        return this._transformMission(mission);
     }
 
-    /**
-     * Complete a step in a mission
-     */
     async completeStep(missionId, stepIndex, userId) {
-        const mission = await this.getMissionById(missionId, userId);
+        const mission = await Mission.findOne({ _id: missionId, userId: userId });
+        if (!mission) throw new Error('Mission not found');
 
-        if (stepIndex < 0 || stepIndex >= mission.steps.length) {
-            throw new Error('Invalid step index');
-        }
+        if (stepIndex < 0 || stepIndex >= mission.steps.length) throw new Error('Invalid step index');
 
         if (mission.steps[stepIndex].completed) {
-            return { mission, alreadyCompleted: true };
+            return { mission: this._transformMission(mission), alreadyCompleted: true };
         }
 
-        // Mark step as completed
+        // Update step
         mission.steps[stepIndex].completed = true;
         mission.steps[stepIndex].completedAt = new Date();
 
-        // Award XP for step completion
+        // Award XP for step
         const stepXp = mission.steps[stepIndex].xpReward || 10;
         await GamificationService.awardXP(userId, stepXp, `Completed step: ${mission.steps[stepIndex].description}`);
 
-        // Check if all steps are completed
+        // Check if all steps completed
         const allStepsCompleted = mission.steps.every(step => step.completed);
+        let missionCompleted = false;
+
         if (allStepsCompleted && !mission.completed) {
             mission.completed = true;
             mission.completedAt = new Date();
+            missionCompleted = true;
 
-            // Award mission completion XP
+            // Award Mission XP
             await GamificationService.awardXP(userId, mission.xpReward, `Completed mission: ${mission.title}`);
+            await GamificationService.onMissionComplete(userId);
         }
 
         await mission.save();
-
-        return { mission, stepXp, missionCompleted: allStepsCompleted };
+        return { mission: this._transformMission(mission), stepXp, missionCompleted };
     }
 
-    /**
-     * Complete entire mission
-     */
     async completeMission(missionId, userId) {
-        const mission = await this.getMissionById(missionId, userId);
+        const mission = await Mission.findOne({ _id: missionId, userId: userId });
+        if (!mission) throw new Error('Mission not found');
 
-        if (mission.completed) {
-            return { mission, alreadyCompleted: true };
-        }
+        if (mission.completed) return { mission: this._transformMission(mission), alreadyCompleted: true };
 
         // Mark all steps as completed
         mission.steps.forEach(step => {
@@ -215,43 +266,39 @@ class MissionService {
         mission.completed = true;
         mission.completedAt = new Date();
 
-        // Award XP
         await GamificationService.awardXP(userId, mission.xpReward, `Completed mission: ${mission.title}`);
+        await GamificationService.onMissionComplete(userId);
 
         await mission.save();
-
-        return { mission, xpAwarded: mission.xpReward };
+        return { mission: this._transformMission(mission), xpAwarded: mission.xpReward };
     }
 
-    /**
-     * Get mission statistics
-     */
     async getMissionStats(userId) {
-        const [total, completed, inProgress] = await Promise.all([
-            Mission.countDocuments({ userId }),
-            Mission.countDocuments({ userId, completed: true }),
-            Mission.countDocuments({ userId, completed: false }),
-        ]);
+        const missions = await Mission.find({ userId: userId });
 
-        const totalXpEarned = await Mission.aggregate([
-            { $match: { userId, completed: true } },
-            { $group: { _id: null, total: { $sum: '$xpReward' } } },
-        ]);
+        const total = missions.length;
+        const completed = missions.filter(m => m.completed).length;
+        const inProgress = total - completed;
+        const totalXpEarned = missions.filter(m => m.completed).reduce((sum, m) => sum + (m.xpReward || 0), 0);
 
         return {
             total,
             completed,
             inProgress,
             completionRate: total > 0 ? (completed / total) * 100 : 0,
-            totalXpEarned: totalXpEarned[0]?.total || 0,
+            totalXpEarned
         };
     }
 
-    /**
-     * Get available templates
-     */
-    getTemplates() {
-        return MISSION_TEMPLATES;
+    getTemplates() { return MISSION_TEMPLATES; }
+
+    _transformMission(mission) {
+        const m = mission.toObject ? mission.toObject() : mission;
+        return {
+            ...m,
+            id: m._id.toString(), // Normalize ID for frontend
+            // Mongoose uses proper casing, so we don't need snake_case conversion logic anymore
+        };
     }
 }
 

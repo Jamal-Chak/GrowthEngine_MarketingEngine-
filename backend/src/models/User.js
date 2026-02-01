@@ -20,6 +20,21 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    subscription: {
+        plan: {
+            type: String,
+            enum: ['free', 'pro', 'agency'],
+            default: 'free'
+        },
+        status: {
+            type: String,
+            enum: ['active', 'past_due', 'canceled', 'trial'],
+            default: 'active'
+        },
+        validUntil: {
+            type: Date
+        }
+    }
 }, { timestamps: true });
 
 // Match user entered password to hashed password in database

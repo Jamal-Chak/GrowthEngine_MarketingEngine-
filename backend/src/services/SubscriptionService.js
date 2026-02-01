@@ -3,22 +3,27 @@ const PaymentService = require('./PaymentService');
 
 class SubscriptionService {
 
-    /**
-     * Get or create subscription for a user
-     * @param {string} userId 
-     */
     async getSubscription(userId) {
-        let subscription = await Subscription.findOne({ userId });
+        const User = require('../models/User');
+        const user = await User.findById(userId);
 
-        if (!subscription) {
-            // Create default free subscription
-            subscription = await Subscription.create({
-                userId,
-                plan: 'free'
-            });
-        }
+        if (!user) throw new Error('User not found');
 
-        return subscription;
+        // Return standardized subscription object
+        return {
+            plan: user.subscription?.plan || 'free',
+            status: user.subscription?.status || 'active',
+            features: this.getFeatures(user.subscription?.plan || 'free')
+        };
+    }
+
+    getFeatures(plan) {
+        const plans = {
+            free: { missionsLimit: -1, aiRecommendationsLimit: 1, teamMembersLimit: 1 },
+            pro: { missionsLimit: -1, aiRecommendationsLimit: -1, teamMembersLimit: 3 },
+            agency: { missionsLimit: -1, aiRecommendationsLimit: -1, teamMembersLimit: -1 }
+        };
+        return plans[plan];
     }
 
     /**
@@ -54,13 +59,26 @@ class SubscriptionService {
     async checkLimit(userId, feature, currentCount) {
         const subscription = await this.getSubscription(userId);
 
+        // Debug
+        console.log(`[Subscription] Checking limit for ${userId}: ${feature} (Plan: ${subscription.plan})`);
+
         let limit;
+        let actualUsage = currentCount;
+
         switch (feature) {
             case 'missions':
                 limit = subscription.features.missionsLimit;
                 break;
             case 'aiRecommendations':
                 limit = subscription.features.aiRecommendationsLimit;
+                // If usage not passed, calculate it
+                if (actualUsage === undefined) {
+                    const Insight = require('../models/Insight');
+                    actualUsage = await Insight.countDocuments({
+                        userId: userId,
+                        type: 'opportunity' // Assuming AI strategies are saved as 'opportunity'
+                    });
+                }
                 break;
             case 'team':
                 limit = subscription.features.teamMembersLimit;
@@ -69,10 +87,12 @@ class SubscriptionService {
                 return true;
         }
 
+        console.log(`[Subscription] Limit: ${limit}, Usage: ${actualUsage}`);
+
         // -1 means unlimited
         if (limit === -1) return true;
 
-        return currentCount < limit;
+        return actualUsage < limit;
     }
 
     /**

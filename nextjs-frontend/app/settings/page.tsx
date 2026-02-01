@@ -7,12 +7,16 @@ import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { fadeInUp } from '@/lib/animations';
-import { useAuth } from '@/context/AuthContext';
-import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { triggerSuccessConfetti } from '@/lib/utils/confetti';
 
 export default function SettingsPage() {
-    const { user } = useAuth();
+    const { data: session } = useSession();
+    const user = session?.user;
     const router = useRouter();
+    const searchParams = useSearchParams();
+
     const [activeTab, setActiveTab] = useState('profile');
     const [saving, setSaving] = useState(false);
     const [subscription, setSubscription] = useState<any>(null);
@@ -20,11 +24,10 @@ export default function SettingsPage() {
     useEffect(() => {
         const fetchSubscription = async () => {
             try {
-                const token = localStorage.getItem('token');
-                if (!token) return;
+                if (!session?.accessToken) return;
 
                 const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/payments/subscription`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
+                    headers: { 'Authorization': `Bearer ${session.accessToken}` }
                 });
                 const data = await res.json();
                 if (data.success) {
@@ -35,8 +38,18 @@ export default function SettingsPage() {
             }
         };
 
-        if (user) fetchSubscription();
-    }, [user]);
+        if (session?.user) fetchSubscription();
+    }, [session]);
+
+    // Handle Payment Success
+    useEffect(() => {
+        if (searchParams.get('payment') === 'success') {
+            triggerSuccessConfetti();
+            setActiveTab('billing');
+            // Clean up URL
+            window.history.replaceState(null, '', '/settings');
+        }
+    }, [searchParams]);
 
     const handleSave = async () => {
         setSaving(true);
@@ -114,7 +127,7 @@ export default function SettingsPage() {
                                     <Input
                                         label="Company Name"
                                         placeholder="Acme Inc."
-                                        defaultValue={user?.company || ''}
+                                        defaultValue={user?.orgId || ''}
                                     />
                                     <div>
                                         <label className="block text-sm font-medium text-white/80 mb-2">

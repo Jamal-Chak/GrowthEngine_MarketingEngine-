@@ -1,659 +1,744 @@
-# GrowthEngine – Practical TODO.md
+main-app.js?v=1769970091328:1170 Download the React DevTools for a better development experience: https://react.dev/link/react-devtools
+C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\lib\api.ts:39 [API] Fetching stats for 697f63a0d23aa77604e70301...
+C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\lib\api.ts:47 [API] Stats response: 200
+C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\lib\services\ai-service.ts:19 [AI Service] Sending payload: {userId: '697f63a0d23aa77604e70301'}
+C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\lib\services\ai-service.ts:22  POST http://127.0.0.1:5000/api/recommendations/generate 500 (Internal Server Error)
+generateStrategy @ C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\lib\services\ai-service.ts:22
+handleGenerateStrategy @ C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\app\dashboard\page.tsx:100
+executeDispatch @ react-dom-client.development.js:16971
+runWithFiberInDEV @ react-dom-client.development.js:872
+processDispatchQueue @ react-dom-client.development.js:17021
+eval @ react-dom-client.development.js:17622
+batchedUpdates$1 @ react-dom-client.development.js:3312
+dispatchEventForPluginEventSystem @ react-dom-client.development.js:17175
+dispatchEvent @ react-dom-client.development.js:21358
+dispatchDiscreteEvent @ react-dom-client.development.js:21326
+<button>
+exports.jsxDEV @ react-jsx-dev-runtime.development.js:323
+Dashboard @ C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\app\dashboard\page.tsx:152
+react_stack_bottom_frame @ react-dom-client.development.js:23584
+renderWithHooksAgain @ react-dom-client.development.js:6893
+renderWithHooks @ react-dom-client.development.js:6805
+updateFunctionComponent @ react-dom-client.development.js:9247
+beginWork @ react-dom-client.development.js:10858
+runWithFiberInDEV @ react-dom-client.development.js:872
+performUnitOfWork @ react-dom-client.development.js:15727
+workLoopSync @ react-dom-client.development.js:15547
+renderRootSync @ react-dom-client.development.js:15527
+performWorkOnRoot @ react-dom-client.development.js:14991
+performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16816
+performWorkUntilDeadline @ scheduler.development.js:45
+<Dashboard>
+exports.jsx @ react-jsx-runtime.development.js:323
+ClientPageRoot @ client-page.js:20
+react_stack_bottom_frame @ react-dom-client.development.js:23584
+renderWithHooksAgain @ react-dom-client.development.js:6893
+renderWithHooks @ react-dom-client.development.js:6805
+updateFunctionComponent @ react-dom-client.development.js:9247
+beginWork @ react-dom-client.development.js:10807
+runWithFiberInDEV @ react-dom-client.development.js:872
+performUnitOfWork @ react-dom-client.development.js:15727
+workLoopConcurrentByScheduler @ react-dom-client.development.js:15721
+renderRootConcurrent @ react-dom-client.development.js:15696
+performWorkOnRoot @ react-dom-client.development.js:14990
+performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16816
+performWorkUntilDeadline @ scheduler.development.js:45
+"use client"
+Promise.all @ VM4478 <anonymous>:1
+Promise.all @ VM4478 <anonymous>:1
+initializeElement @ react-server-dom-webpack-client.browser.development.js:1368
+eval @ react-server-dom-webpack-client.browser.development.js:3108
+initializeModelChunk @ react-server-dom-webpack-client.browser.development.js:1265
+resolveModelChunk @ react-server-dom-webpack-client.browser.development.js:1119
+processFullStringRow @ react-server-dom-webpack-client.browser.development.js:2941
+processFullBinaryRow @ react-server-dom-webpack-client.browser.development.js:2808
+processBinaryChunk @ react-server-dom-webpack-client.browser.development.js:3011
+progress @ react-server-dom-webpack-client.browser.development.js:3275
+"use server"
+ResponseInstance @ react-server-dom-webpack-client.browser.development.js:2074
+createResponseFromOptions @ react-server-dom-webpack-client.browser.development.js:3136
+exports.createFromReadableStream @ react-server-dom-webpack-client.browser.development.js:3521
+eval @ app-index.js:130
+(app-pages-browser)/./node_modules/next/dist/client/app-index.js @ main-app.js?v=1769970091328:160
+options.factory @ webpack.js:1
+__webpack_require__ @ webpack.js:1
+fn @ webpack.js:1
+eval @ app-next-dev.js:14
+eval @ app-bootstrap.js:59
+loadScriptsInSequence @ app-bootstrap.js:24
+appBootstrap @ app-bootstrap.js:53
+eval @ app-next-dev.js:13
+(app-pages-browser)/./node_modules/next/dist/client/app-next-dev.js @ main-app.js?v=1769970091328:182
+options.factory @ webpack.js:1
+__webpack_require__ @ webpack.js:1
+__webpack_exec__ @ main-app.js?v=1769970091328:1878
+(anonymous) @ main-app.js?v=1769970091328:1879
+webpackJsonpCallback @ webpack.js:1
+(anonymous) @ main-app.js?v=1769970091328:9
+C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\lib\services\ai-service.ts:33 [AI Service] Backend Error: {error: 'Failed to save insights: invalid input syntax for type uuid: "697f63a0d23aa77604e70301"'}
+error @ intercept-console-error.js:57
+generateStrategy @ C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\lib\services\ai-service.ts:33
+await in generateStrategy
+handleGenerateStrategy @ C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\app\dashboard\page.tsx:100
+executeDispatch @ react-dom-client.development.js:16971
+runWithFiberInDEV @ react-dom-client.development.js:872
+processDispatchQueue @ react-dom-client.development.js:17021
+eval @ react-dom-client.development.js:17622
+batchedUpdates$1 @ react-dom-client.development.js:3312
+dispatchEventForPluginEventSystem @ react-dom-client.development.js:17175
+dispatchEvent @ react-dom-client.development.js:21358
+dispatchDiscreteEvent @ react-dom-client.development.js:21326
+<button>
+exports.jsxDEV @ react-jsx-dev-runtime.development.js:323
+Dashboard @ C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\app\dashboard\page.tsx:152
+react_stack_bottom_frame @ react-dom-client.development.js:23584
+renderWithHooksAgain @ react-dom-client.development.js:6893
+renderWithHooks @ react-dom-client.development.js:6805
+updateFunctionComponent @ react-dom-client.development.js:9247
+beginWork @ react-dom-client.development.js:10858
+runWithFiberInDEV @ react-dom-client.development.js:872
+performUnitOfWork @ react-dom-client.development.js:15727
+workLoopSync @ react-dom-client.development.js:15547
+renderRootSync @ react-dom-client.development.js:15527
+performWorkOnRoot @ react-dom-client.development.js:14991
+performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16816
+performWorkUntilDeadline @ scheduler.development.js:45
+<Dashboard>
+exports.jsx @ react-jsx-runtime.development.js:323
+ClientPageRoot @ client-page.js:20
+react_stack_bottom_frame @ react-dom-client.development.js:23584
+renderWithHooksAgain @ react-dom-client.development.js:6893
+renderWithHooks @ react-dom-client.development.js:6805
+updateFunctionComponent @ react-dom-client.development.js:9247
+beginWork @ react-dom-client.development.js:10807
+runWithFiberInDEV @ react-dom-client.development.js:872
+performUnitOfWork @ react-dom-client.development.js:15727
+workLoopConcurrentByScheduler @ react-dom-client.development.js:15721
+renderRootConcurrent @ react-dom-client.development.js:15696
+performWorkOnRoot @ react-dom-client.development.js:14990
+performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16816
+performWorkUntilDeadline @ scheduler.development.js:45
+"use client"
+Promise.all @ VM4478 <anonymous>:1
+Promise.all @ VM4478 <anonymous>:1
+initializeElement @ react-server-dom-webpack-client.browser.development.js:1368
+eval @ react-server-dom-webpack-client.browser.development.js:3108
+initializeModelChunk @ react-server-dom-webpack-client.browser.development.js:1265
+resolveModelChunk @ react-server-dom-webpack-client.browser.development.js:1119
+processFullStringRow @ react-server-dom-webpack-client.browser.development.js:2941
+processFullBinaryRow @ react-server-dom-webpack-client.browser.development.js:2808
+processBinaryChunk @ react-server-dom-webpack-client.browser.development.js:3011
+progress @ react-server-dom-webpack-client.browser.development.js:3275
+"use server"
+ResponseInstance @ react-server-dom-webpack-client.browser.development.js:2074
+createResponseFromOptions @ react-server-dom-webpack-client.browser.development.js:3136
+exports.createFromReadableStream @ react-server-dom-webpack-client.browser.development.js:3521
+eval @ app-index.js:130
+(app-pages-browser)/./node_modules/next/dist/client/app-index.js @ main-app.js?v=1769970091328:160
+options.factory @ webpack.js:1
+__webpack_require__ @ webpack.js:1
+fn @ webpack.js:1
+eval @ app-next-dev.js:14
+eval @ app-bootstrap.js:59
+loadScriptsInSequence @ app-bootstrap.js:24
+appBootstrap @ app-bootstrap.js:53
+eval @ app-next-dev.js:13
+(app-pages-browser)/./node_modules/next/dist/client/app-next-dev.js @ main-app.js?v=1769970091328:182
+options.factory @ webpack.js:1
+__webpack_require__ @ webpack.js:1
+__webpack_exec__ @ main-app.js?v=1769970091328:1878
+(anonymous) @ main-app.js?v=1769970091328:1879
+webpackJsonpCallback @ webpack.js:1
+(anonymous) @ main-app.js?v=1769970091328:9
+C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\lib\services\ai-service.ts:40 [AI Service] Network/API Error: Error: Failed to save insights: invalid input syntax for type uuid: "697f63a0d23aa77604e70301"
+    at Object.generateStrategy (C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\lib\services\ai-service.ts:34:23)
+    at async handleGenerateStrategy (C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\app\dashboard\page.tsx:100:29)
+error @ intercept-console-error.js:57
+generateStrategy @ C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\lib\services\ai-service.ts:40
+await in generateStrategy
+handleGenerateStrategy @ C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\app\dashboard\page.tsx:100
+executeDispatch @ react-dom-client.development.js:16971
+runWithFiberInDEV @ react-dom-client.development.js:872
+processDispatchQueue @ react-dom-client.development.js:17021
+eval @ react-dom-client.development.js:17622
+batchedUpdates$1 @ react-dom-client.development.js:3312
+dispatchEventForPluginEventSystem @ react-dom-client.development.js:17175
+dispatchEvent @ react-dom-client.development.js:21358
+dispatchDiscreteEvent @ react-dom-client.development.js:21326
+<button>
+exports.jsxDEV @ react-jsx-dev-runtime.development.js:323
+Dashboard @ C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\app\dashboard\page.tsx:152
+react_stack_bottom_frame @ react-dom-client.development.js:23584
+renderWithHooksAgain @ react-dom-client.development.js:6893
+renderWithHooks @ react-dom-client.development.js:6805
+updateFunctionComponent @ react-dom-client.development.js:9247
+beginWork @ react-dom-client.development.js:10858
+runWithFiberInDEV @ react-dom-client.development.js:872
+performUnitOfWork @ react-dom-client.development.js:15727
+workLoopSync @ react-dom-client.development.js:15547
+renderRootSync @ react-dom-client.development.js:15527
+performWorkOnRoot @ react-dom-client.development.js:14991
+performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16816
+performWorkUntilDeadline @ scheduler.development.js:45
+<Dashboard>
+exports.jsx @ react-jsx-runtime.development.js:323
+ClientPageRoot @ client-page.js:20
+react_stack_bottom_frame @ react-dom-client.development.js:23584
+renderWithHooksAgain @ react-dom-client.development.js:6893
+renderWithHooks @ react-dom-client.development.js:6805
+updateFunctionComponent @ react-dom-client.development.js:9247
+beginWork @ react-dom-client.development.js:10807
+runWithFiberInDEV @ react-dom-client.development.js:872
+performUnitOfWork @ react-dom-client.development.js:15727
+workLoopConcurrentByScheduler @ react-dom-client.development.js:15721
+renderRootConcurrent @ react-dom-client.development.js:15696
+performWorkOnRoot @ react-dom-client.development.js:14990
+performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16816
+performWorkUntilDeadline @ scheduler.development.js:45
+"use client"
+Promise.all @ VM4478 <anonymous>:1
+Promise.all @ VM4478 <anonymous>:1
+initializeElement @ react-server-dom-webpack-client.browser.development.js:1368
+eval @ react-server-dom-webpack-client.browser.development.js:3108
+initializeModelChunk @ react-server-dom-webpack-client.browser.development.js:1265
+resolveModelChunk @ react-server-dom-webpack-client.browser.development.js:1119
+processFullStringRow @ react-server-dom-webpack-client.browser.development.js:2941
+processFullBinaryRow @ react-server-dom-webpack-client.browser.development.js:2808
+processBinaryChunk @ react-server-dom-webpack-client.browser.development.js:3011
+progress @ react-server-dom-webpack-client.browser.development.js:3275
+"use server"
+ResponseInstance @ react-server-dom-webpack-client.browser.development.js:2074
+createResponseFromOptions @ react-server-dom-webpack-client.browser.development.js:3136
+exports.createFromReadableStream @ react-server-dom-webpack-client.browser.development.js:3521
+eval @ app-index.js:130
+(app-pages-browser)/./node_modules/next/dist/client/app-index.js @ main-app.js?v=1769970091328:160
+options.factory @ webpack.js:1
+__webpack_require__ @ webpack.js:1
+fn @ webpack.js:1
+eval @ app-next-dev.js:14
+eval @ app-bootstrap.js:59
+loadScriptsInSequence @ app-bootstrap.js:24
+appBootstrap @ app-bootstrap.js:53
+eval @ app-next-dev.js:13
+(app-pages-browser)/./node_modules/next/dist/client/app-next-dev.js @ main-app.js?v=1769970091328:182
+options.factory @ webpack.js:1
+__webpack_require__ @ webpack.js:1
+__webpack_exec__ @ main-app.js?v=1769970091328:1878
+(anonymous) @ main-app.js?v=1769970091328:1879
+webpackJsonpCallback @ webpack.js:1
+(anonymous) @ main-app.js?v=1769970091328:9
+C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\app\dashboard\page.tsx:109 Failed to generate strategy: Error: Failed to save insights: invalid input syntax for type uuid: "697f63a0d23aa77604e70301"
+    at Object.generateStrategy (C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\lib\services\ai-service.ts:34:23)
+    at async handleGenerateStrategy (C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\app\dashboard\page.tsx:100:29)
+error @ intercept-console-error.js:57
+handleGenerateStrategy @ C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\app\dashboard\page.tsx:109
+await in handleGenerateStrategy
+executeDispatch @ react-dom-client.development.js:16971
+runWithFiberInDEV @ react-dom-client.development.js:872
+processDispatchQueue @ react-dom-client.development.js:17021
+eval @ react-dom-client.development.js:17622
+batchedUpdates$1 @ react-dom-client.development.js:3312
+dispatchEventForPluginEventSystem @ react-dom-client.development.js:17175
+dispatchEvent @ react-dom-client.development.js:21358
+dispatchDiscreteEvent @ react-dom-client.development.js:21326
+<button>
+exports.jsxDEV @ react-jsx-dev-runtime.development.js:323
+Dashboard @ C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\app\dashboard\page.tsx:152
+react_stack_bottom_frame @ react-dom-client.development.js:23584
+renderWithHooksAgain @ react-dom-client.development.js:6893
+renderWithHooks @ react-dom-client.development.js:6805
+updateFunctionComponent @ react-dom-client.development.js:9247
+beginWork @ react-dom-client.development.js:10858
+runWithFiberInDEV @ react-dom-client.development.js:872
+performUnitOfWork @ react-dom-client.development.js:15727
+workLoopSync @ react-dom-client.development.js:15547
+renderRootSync @ react-dom-client.development.js:15527
+performWorkOnRoot @ react-dom-client.development.js:14991
+performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16816
+performWorkUntilDeadline @ scheduler.development.js:45
+<Dashboard>
+exports.jsx @ react-jsx-runtime.development.js:323
+ClientPageRoot @ client-page.js:20
+react_stack_bottom_frame @ react-dom-client.development.js:23584
+renderWithHooksAgain @ react-dom-client.development.js:6893
+renderWithHooks @ react-dom-client.development.js:6805
+updateFunctionComponent @ react-dom-client.development.js:9247
+beginWork @ react-dom-client.development.js:10807
+runWithFiberInDEV @ react-dom-client.development.js:872
+performUnitOfWork @ react-dom-client.development.js:15727
+workLoopConcurrentByScheduler @ react-dom-client.development.js:15721
+renderRootConcurrent @ react-dom-client.development.js:15696
+performWorkOnRoot @ react-dom-client.development.js:14990
+performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16816
+performWorkUntilDeadline @ scheduler.development.js:45
+"use client"
+Promise.all @ VM4478 <anonymous>:1
+Promise.all @ VM4478 <anonymous>:1
+initializeElement @ react-server-dom-webpack-client.browser.development.js:1368
+eval @ react-server-dom-webpack-client.browser.development.js:3108
+initializeModelChunk @ react-server-dom-webpack-client.browser.development.js:1265
+resolveModelChunk @ react-server-dom-webpack-client.browser.development.js:1119
+processFullStringRow @ react-server-dom-webpack-client.browser.development.js:2941
+processFullBinaryRow @ react-server-dom-webpack-client.browser.development.js:2808
+processBinaryChunk @ react-server-dom-webpack-client.browser.development.js:3011
+progress @ react-server-dom-webpack-client.browser.development.js:3275
+"use server"
+ResponseInstance @ react-server-dom-webpack-client.browser.development.js:2074
+createResponseFromOptions @ react-server-dom-webpack-client.browser.development.js:3136
+exports.createFromReadableStream @ react-server-dom-webpack-client.browser.development.js:3521
+eval @ app-index.js:130
+(app-pages-browser)/./node_modules/next/dist/client/app-index.js @ main-app.js?v=1769970091328:160
+options.factory @ webpack.js:1
+__webpack_require__ @ webpack.js:1
+fn @ webpack.js:1
+eval @ app-next-dev.js:14
+eval @ app-bootstrap.js:59
+loadScriptsInSequence @ app-bootstrap.js:24
+appBootstrap @ app-bootstrap.js:53
+eval @ app-next-dev.js:13
+(app-pages-browser)/./node_modules/next/dist/client/app-next-dev.js @ main-app.js?v=1769970091328:182
+options.factory @ webpack.js:1
+__webpack_require__ @ webpack.js:1
+__webpack_exec__ @ main-app.js?v=1769970091328:1878
+(anonymous) @ main-app.js?v=1769970091328:1879
+webpackJsonpCallback @ webpack.js:1
+(anonymous) @ main-app.js?v=1769970091328:9
+C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\lib\services\ai-service.ts:19 [AI Service] Sending payload: {userId: '697f63a0d23aa77604e70301'}
+C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\lib\services\ai-service.ts:22  POST http://127.0.0.1:5000/api/recommendations/generate 500 (Internal Server Error)
+generateStrategy @ C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\lib\services\ai-service.ts:22
+handleGenerateStrategy @ C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\app\dashboard\page.tsx:100
+executeDispatch @ react-dom-client.development.js:16971
+runWithFiberInDEV @ react-dom-client.development.js:872
+processDispatchQueue @ react-dom-client.development.js:17021
+eval @ react-dom-client.development.js:17622
+batchedUpdates$1 @ react-dom-client.development.js:3312
+dispatchEventForPluginEventSystem @ react-dom-client.development.js:17175
+dispatchEvent @ react-dom-client.development.js:21358
+dispatchDiscreteEvent @ react-dom-client.development.js:21326
+<button>
+exports.jsxDEV @ react-jsx-dev-runtime.development.js:323
+Dashboard @ C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\app\dashboard\page.tsx:152
+react_stack_bottom_frame @ react-dom-client.development.js:23584
+renderWithHooksAgain @ react-dom-client.development.js:6893
+renderWithHooks @ react-dom-client.development.js:6805
+updateFunctionComponent @ react-dom-client.development.js:9247
+beginWork @ react-dom-client.development.js:10858
+runWithFiberInDEV @ react-dom-client.development.js:872
+performUnitOfWork @ react-dom-client.development.js:15727
+workLoopSync @ react-dom-client.development.js:15547
+renderRootSync @ react-dom-client.development.js:15527
+performWorkOnRoot @ react-dom-client.development.js:14991
+performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16816
+performWorkUntilDeadline @ scheduler.development.js:45
+<Dashboard>
+exports.jsx @ react-jsx-runtime.development.js:323
+ClientPageRoot @ client-page.js:20
+react_stack_bottom_frame @ react-dom-client.development.js:23584
+renderWithHooksAgain @ react-dom-client.development.js:6893
+renderWithHooks @ react-dom-client.development.js:6805
+updateFunctionComponent @ react-dom-client.development.js:9247
+beginWork @ react-dom-client.development.js:10807
+runWithFiberInDEV @ react-dom-client.development.js:872
+performUnitOfWork @ react-dom-client.development.js:15727
+workLoopConcurrentByScheduler @ react-dom-client.development.js:15721
+renderRootConcurrent @ react-dom-client.development.js:15696
+performWorkOnRoot @ react-dom-client.development.js:14990
+performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16816
+performWorkUntilDeadline @ scheduler.development.js:45
+"use client"
+Promise.all @ VM4478 <anonymous>:1
+Promise.all @ VM4478 <anonymous>:1
+initializeElement @ react-server-dom-webpack-client.browser.development.js:1368
+eval @ react-server-dom-webpack-client.browser.development.js:3108
+initializeModelChunk @ react-server-dom-webpack-client.browser.development.js:1265
+resolveModelChunk @ react-server-dom-webpack-client.browser.development.js:1119
+processFullStringRow @ react-server-dom-webpack-client.browser.development.js:2941
+processFullBinaryRow @ react-server-dom-webpack-client.browser.development.js:2808
+processBinaryChunk @ react-server-dom-webpack-client.browser.development.js:3011
+progress @ react-server-dom-webpack-client.browser.development.js:3275
+"use server"
+ResponseInstance @ react-server-dom-webpack-client.browser.development.js:2074
+createResponseFromOptions @ react-server-dom-webpack-client.browser.development.js:3136
+exports.createFromReadableStream @ react-server-dom-webpack-client.browser.development.js:3521
+eval @ app-index.js:130
+(app-pages-browser)/./node_modules/next/dist/client/app-index.js @ main-app.js?v=1769970091328:160
+options.factory @ webpack.js:1
+__webpack_require__ @ webpack.js:1
+fn @ webpack.js:1
+eval @ app-next-dev.js:14
+eval @ app-bootstrap.js:59
+loadScriptsInSequence @ app-bootstrap.js:24
+appBootstrap @ app-bootstrap.js:53
+eval @ app-next-dev.js:13
+(app-pages-browser)/./node_modules/next/dist/client/app-next-dev.js @ main-app.js?v=1769970091328:182
+options.factory @ webpack.js:1
+__webpack_require__ @ webpack.js:1
+__webpack_exec__ @ main-app.js?v=1769970091328:1878
+(anonymous) @ main-app.js?v=1769970091328:1879
+webpackJsonpCallback @ webpack.js:1
+(anonymous) @ main-app.js?v=1769970091328:9
+C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\lib\services\ai-service.ts:33 [AI Service] Backend Error: {error: 'Failed to save insights: invalid input syntax for type uuid: "697f63a0d23aa77604e70301"'}
+error @ intercept-console-error.js:57
+generateStrategy @ C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\lib\services\ai-service.ts:33
+await in generateStrategy
+handleGenerateStrategy @ C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\app\dashboard\page.tsx:100
+executeDispatch @ react-dom-client.development.js:16971
+runWithFiberInDEV @ react-dom-client.development.js:872
+processDispatchQueue @ react-dom-client.development.js:17021
+eval @ react-dom-client.development.js:17622
+batchedUpdates$1 @ react-dom-client.development.js:3312
+dispatchEventForPluginEventSystem @ react-dom-client.development.js:17175
+dispatchEvent @ react-dom-client.development.js:21358
+dispatchDiscreteEvent @ react-dom-client.development.js:21326
+<button>
+exports.jsxDEV @ react-jsx-dev-runtime.development.js:323
+Dashboard @ C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\app\dashboard\page.tsx:152
+react_stack_bottom_frame @ react-dom-client.development.js:23584
+renderWithHooksAgain @ react-dom-client.development.js:6893
+renderWithHooks @ react-dom-client.development.js:6805
+updateFunctionComponent @ react-dom-client.development.js:9247
+beginWork @ react-dom-client.development.js:10858
+runWithFiberInDEV @ react-dom-client.development.js:872
+performUnitOfWork @ react-dom-client.development.js:15727
+workLoopSync @ react-dom-client.development.js:15547
+renderRootSync @ react-dom-client.development.js:15527
+performWorkOnRoot @ react-dom-client.development.js:14991
+performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16816
+performWorkUntilDeadline @ scheduler.development.js:45
+<Dashboard>
+exports.jsx @ react-jsx-runtime.development.js:323
+ClientPageRoot @ client-page.js:20
+react_stack_bottom_frame @ react-dom-client.development.js:23584
+renderWithHooksAgain @ react-dom-client.development.js:6893
+renderWithHooks @ react-dom-client.development.js:6805
+updateFunctionComponent @ react-dom-client.development.js:9247
+beginWork @ react-dom-client.development.js:10807
+runWithFiberInDEV @ react-dom-client.development.js:872
+performUnitOfWork @ react-dom-client.development.js:15727
+workLoopConcurrentByScheduler @ react-dom-client.development.js:15721
+renderRootConcurrent @ react-dom-client.development.js:15696
+performWorkOnRoot @ react-dom-client.development.js:14990
+performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16816
+performWorkUntilDeadline @ scheduler.development.js:45
+"use client"
+Promise.all @ VM4478 <anonymous>:1
+Promise.all @ VM4478 <anonymous>:1
+initializeElement @ react-server-dom-webpack-client.browser.development.js:1368
+eval @ react-server-dom-webpack-client.browser.development.js:3108
+initializeModelChunk @ react-server-dom-webpack-client.browser.development.js:1265
+resolveModelChunk @ react-server-dom-webpack-client.browser.development.js:1119
+processFullStringRow @ react-server-dom-webpack-client.browser.development.js:2941
+processFullBinaryRow @ react-server-dom-webpack-client.browser.development.js:2808
+processBinaryChunk @ react-server-dom-webpack-client.browser.development.js:3011
+progress @ react-server-dom-webpack-client.browser.development.js:3275
+"use server"
+ResponseInstance @ react-server-dom-webpack-client.browser.development.js:2074
+createResponseFromOptions @ react-server-dom-webpack-client.browser.development.js:3136
+exports.createFromReadableStream @ react-server-dom-webpack-client.browser.development.js:3521
+eval @ app-index.js:130
+(app-pages-browser)/./node_modules/next/dist/client/app-index.js @ main-app.js?v=1769970091328:160
+options.factory @ webpack.js:1
+__webpack_require__ @ webpack.js:1
+fn @ webpack.js:1
+eval @ app-next-dev.js:14
+eval @ app-bootstrap.js:59
+loadScriptsInSequence @ app-bootstrap.js:24
+appBootstrap @ app-bootstrap.js:53
+eval @ app-next-dev.js:13
+(app-pages-browser)/./node_modules/next/dist/client/app-next-dev.js @ main-app.js?v=1769970091328:182
+options.factory @ webpack.js:1
+__webpack_require__ @ webpack.js:1
+__webpack_exec__ @ main-app.js?v=1769970091328:1878
+(anonymous) @ main-app.js?v=1769970091328:1879
+webpackJsonpCallback @ webpack.js:1
+(anonymous) @ main-app.js?v=1769970091328:9
+C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\lib\services\ai-service.ts:40 [AI Service] Network/API Error: Error: Failed to save insights: invalid input syntax for type uuid: "697f63a0d23aa77604e70301"
+    at Object.generateStrategy (C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\lib\services\ai-service.ts:34:23)
+    at async handleGenerateStrategy (C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\app\dashboard\page.tsx:100:29)
+error @ intercept-console-error.js:57
+generateStrategy @ C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\lib\services\ai-service.ts:40
+await in generateStrategy
+handleGenerateStrategy @ C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\app\dashboard\page.tsx:100
+executeDispatch @ react-dom-client.development.js:16971
+runWithFiberInDEV @ react-dom-client.development.js:872
+processDispatchQueue @ react-dom-client.development.js:17021
+eval @ react-dom-client.development.js:17622
+batchedUpdates$1 @ react-dom-client.development.js:3312
+dispatchEventForPluginEventSystem @ react-dom-client.development.js:17175
+dispatchEvent @ react-dom-client.development.js:21358
+dispatchDiscreteEvent @ react-dom-client.development.js:21326
+<button>
+exports.jsxDEV @ react-jsx-dev-runtime.development.js:323
+Dashboard @ C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\app\dashboard\page.tsx:152
+react_stack_bottom_frame @ react-dom-client.development.js:23584
+renderWithHooksAgain @ react-dom-client.development.js:6893
+renderWithHooks @ react-dom-client.development.js:6805
+updateFunctionComponent @ react-dom-client.development.js:9247
+beginWork @ react-dom-client.development.js:10858
+runWithFiberInDEV @ react-dom-client.development.js:872
+performUnitOfWork @ react-dom-client.development.js:15727
+workLoopSync @ react-dom-client.development.js:15547
+renderRootSync @ react-dom-client.development.js:15527
+performWorkOnRoot @ react-dom-client.development.js:14991
+performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16816
+performWorkUntilDeadline @ scheduler.development.js:45
+<Dashboard>
+exports.jsx @ react-jsx-runtime.development.js:323
+ClientPageRoot @ client-page.js:20
+react_stack_bottom_frame @ react-dom-client.development.js:23584
+renderWithHooksAgain @ react-dom-client.development.js:6893
+renderWithHooks @ react-dom-client.development.js:6805
+updateFunctionComponent @ react-dom-client.development.js:9247
+beginWork @ react-dom-client.development.js:10807
+runWithFiberInDEV @ react-dom-client.development.js:872
+performUnitOfWork @ react-dom-client.development.js:15727
+workLoopConcurrentByScheduler @ react-dom-client.development.js:15721
+renderRootConcurrent @ react-dom-client.development.js:15696
+performWorkOnRoot @ react-dom-client.development.js:14990
+performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16816
+performWorkUntilDeadline @ scheduler.development.js:45
+"use client"
+Promise.all @ VM4478 <anonymous>:1
+Promise.all @ VM4478 <anonymous>:1
+initializeElement @ react-server-dom-webpack-client.browser.development.js:1368
+eval @ react-server-dom-webpack-client.browser.development.js:3108
+initializeModelChunk @ react-server-dom-webpack-client.browser.development.js:1265
+resolveModelChunk @ react-server-dom-webpack-client.browser.development.js:1119
+processFullStringRow @ react-server-dom-webpack-client.browser.development.js:2941
+processFullBinaryRow @ react-server-dom-webpack-client.browser.development.js:2808
+processBinaryChunk @ react-server-dom-webpack-client.browser.development.js:3011
+progress @ react-server-dom-webpack-client.browser.development.js:3275
+"use server"
+ResponseInstance @ react-server-dom-webpack-client.browser.development.js:2074
+createResponseFromOptions @ react-server-dom-webpack-client.browser.development.js:3136
+exports.createFromReadableStream @ react-server-dom-webpack-client.browser.development.js:3521
+eval @ app-index.js:130
+(app-pages-browser)/./node_modules/next/dist/client/app-index.js @ main-app.js?v=1769970091328:160
+options.factory @ webpack.js:1
+__webpack_require__ @ webpack.js:1
+fn @ webpack.js:1
+eval @ app-next-dev.js:14
+eval @ app-bootstrap.js:59
+loadScriptsInSequence @ app-bootstrap.js:24
+appBootstrap @ app-bootstrap.js:53
+eval @ app-next-dev.js:13
+(app-pages-browser)/./node_modules/next/dist/client/app-next-dev.js @ main-app.js?v=1769970091328:182
+options.factory @ webpack.js:1
+__webpack_require__ @ webpack.js:1
+__webpack_exec__ @ main-app.js?v=1769970091328:1878
+(anonymous) @ main-app.js?v=1769970091328:1879
+webpackJsonpCallback @ webpack.js:1
+(anonymous) @ main-app.js?v=1769970091328:9
+C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\app\dashboard\page.tsx:109 Failed to generate strategy: Error: Failed to save insights: invalid input syntax for type uuid: "697f63a0d23aa77604e70301"
+    at Object.generateStrategy (C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\lib\services\ai-service.ts:34:23)
+    at async handleGenerateStrategy (C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\app\dashboard\page.tsx:100:29)
+error @ intercept-console-error.js:57
+handleGenerateStrategy @ C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\app\dashboard\page.tsx:109
+await in handleGenerateStrategy
+executeDispatch @ react-dom-client.development.js:16971
+runWithFiberInDEV @ react-dom-client.development.js:872
+processDispatchQueue @ react-dom-client.development.js:17021
+eval @ react-dom-client.development.js:17622
+batchedUpdates$1 @ react-dom-client.development.js:3312
+dispatchEventForPluginEventSystem @ react-dom-client.development.js:17175
+dispatchEvent @ react-dom-client.development.js:21358
+dispatchDiscreteEvent @ react-dom-client.development.js:21326
+<button>
+exports.jsxDEV @ react-jsx-dev-runtime.development.js:323
+Dashboard @ C:\Users\Tessl\Documents\GitHub\GrowthEngine_MarketingEngine-\nextjs-frontend\app\dashboard\page.tsx:152
+react_stack_bottom_frame @ react-dom-client.development.js:23584
+renderWithHooksAgain @ react-dom-client.development.js:6893
+renderWithHooks @ react-dom-client.development.js:6805
+updateFunctionComponent @ react-dom-client.development.js:9247
+beginWork @ react-dom-client.development.js:10858
+runWithFiberInDEV @ react-dom-client.development.js:872
+performUnitOfWork @ react-dom-client.development.js:15727
+workLoopSync @ react-dom-client.development.js:15547
+renderRootSync @ react-dom-client.development.js:15527
+performWorkOnRoot @ react-dom-client.development.js:14991
+performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16816
+performWorkUntilDeadline @ scheduler.development.js:45
+<Dashboard>
+exports.jsx @ react-jsx-runtime.development.js:323
+ClientPageRoot @ client-page.js:20
+react_stack_bottom_frame @ react-dom-client.development.js:23584
+renderWithHooksAgain @ react-dom-client.development.js:6893
+renderWithHooks @ react-dom-client.development.js:6805
+updateFunctionComponent @ react-dom-client.development.js:9247
+beginWork @ react-dom-client.development.js:10807
+runWithFiberInDEV @ react-dom-client.development.js:872
+performUnitOfWork @ react-dom-client.development.js:15727
+workLoopConcurrentByScheduler @ react-dom-client.development.js:15721
+renderRootConcurrent @ react-dom-client.development.js:15696
+performWorkOnRoot @ react-dom-client.development.js:14990
+performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16816
+performWorkUntilDeadline @ scheduler.development.js:45
+"use client"
+Promise.all @ VM4478 <anonymous>:1
+Promise.all @ VM4478 <anonymous>:1
+initializeElement @ react-server-dom-webpack-client.browser.development.js:1368
+eval @ react-server-dom-webpack-client.browser.development.js:3108
+initializeModelChunk @ react-server-dom-webpack-client.browser.development.js:1265
+resolveModelChunk @ react-server-dom-webpack-client.browser.development.js:1119
+processFullStringRow @ react-server-dom-webpack-client.browser.development.js:2941
+processFullBinaryRow @ react-server-dom-webpack-client.browser.development.js:2808
+processBinaryChunk @ react-server-dom-webpack-client.browser.development.js:3011
+progress @ react-server-dom-webpack-client.browser.development.js:3275
+"use server"
+ResponseInstance @ react-server-dom-webpack-client.browser.development.js:2074
+createResponseFromOptions @ react-server-dom-webpack-client.browser.development.js:3136
+exports.createFromReadableStream @ react-server-dom-webpack-client.browser.development.js:3521
+eval @ app-index.js:130
+(app-pages-browser)/./node_modules/next/dist/client/app-index.js @ main-app.js?v=1769970091328:160
+options.factory @ webpack.js:1
+__webpack_require__ @ webpack.js:1
+fn @ webpack.js:1
+eval @ app-next-dev.js:14
+eval @ app-bootstrap.js:59
+loadScriptsInSequence @ app-bootstrap.js:24
+appBootstrap @ app-bootstrap.js:53
+eval @ app-next-dev.js:13
+(app-pages-browser)/./node_modules/next/dist/client/app-next-dev.js @ main-app.js?v=1769970091328:182
+options.factory @ webpack.js:1
+__webpack_require__ @ webpack.js:1
+__webpack_exec__ @ main-app.js?v=1769970091328:1878
+(anonymous) @ main-app.js?v=1769970091328:1879
+webpackJsonpCallback @ webpack.js:1
+(anonymous) @ main-app.js?v=1769970091328:9
 
-This document defines **exactly** how the application should look, feel, and function in real-world terms. This is not theory. This is an execution checklist.
+
+
+
+# 🧨 TODO: Fix UUID vs ObjectId Crash in AI Insights Save
+
+## Root Cause (CONFIRMED)
+Backend error:
+invalid input syntax for type uuid: "697f63a0d23aa77604e70301"
+
+
+- `697f63a0d23aa77604e70301` is a **MongoDB ObjectId**
+- Backend database expects a **UUID**
+- PostgreSQL rejects the insert → 500 error
 
 ---
 
-## 0. Product North Star (DO NOT SKIP)
+## 1️⃣ Decide the Source of Truth for User IDs (MANDATORY)
 
-**Target user:** Founder / Growth lead at a small–mid business
+### Choose ONE (do not mix):
 
-**Core promise:**
+- [ ] **Option A (Recommended): Use UUID everywhere**
+- [ ] Option B: Use Mongo ObjectId everywhere
+- [ ] Option C: Map ObjectId → UUID (complex, avoid for now)
 
-> “GrowthEngine tells you what to do next to grow — and turns it into action.”
-
-**Primary success metric:**
-
-* User completes first mission within 24 hours
-
-If a feature does not support this, it is not a priority.
+✅ **Recommendation**: Option A (UUID-first architecture)
 
 ---
 
-## 1. Global UX & Design Rules
+## 2️⃣ Backend: Fix Database Schema (Postgres)
 
-### 1.1 Design System (Mandatory)
+### Inspect insights table
+- [ ] Open DB
+- [ ] Check column type:
+  ```sql
+  \d insights;
+If column is:
 
-* Dark-first UI
-* One primary accent color
-* One success color
-* One danger color
-* Same border radius everywhere (rounded-xl)
-* Same shadow system everywhere
-* Same spacing scale (4 / 8 / 16 / 24 / 32)
+user_id UUID
+→ current frontend value will never work
 
-**TODO**
+3️⃣ Backend: Temporary Hotfix (FASTEST UNBLOCK)
+Until auth is unified, do this:
 
-* [ ] Create `styles/designSystem.js`
-* [ ] Refactor all components to use system values
-* [ ] Remove inline or custom styling inconsistencies
+Change user_id column type
+ALTER TABLE insights
+ALTER COLUMN user_id TYPE TEXT;
+✅ This immediately stops crashes
+⚠️ This is a short-term fix
 
----
+4️⃣ Backend: Add UUID Validation Guard (REQUIRED)
+In /api/recommendations/generate:
 
-### 1.2 App-Wide UX Rules
+from uuid import UUID
 
-* Every screen answers:
+def is_valid_uuid(val):
+    try:
+        UUID(val)
+        return True
+    except:
+        return False
+Then before DB insert:
 
-  1. What’s happening?
-  2. What should I do?
-  3. Why does it matter?
+if not is_valid_uuid(user_id):
+    return jsonify({
+        "error": "Invalid user_id format. Expected UUID."
+    }), 400
+🚫 Never let Postgres throw this error again
 
-* No screen shows more than ONE primary action
+5️⃣ Frontend: Stop Sending Raw ObjectId Blindly
+File: ai-service.ts
 
-* Empty states must guide the user
+Current payload:
 
-* No raw data without explanation
+{ userId: "697f63a0d23aa77604e70301" }
+Replace with:
+ user.uuid if available
 
-**TODO**
+ OR explicitly name it:
 
-* [ ] Audit every page for a single clear action
-* [ ] Add empty states everywhere data can be missing
+{
+  mongoUserId: userId
+}
+Backend must match naming
 
----
+6️⃣ Backend: Align Field Names Explicitly
+If keeping Mongo IDs temporarily:
 
-## 2. Authentication & Access
+mongo_user_id = data.get("mongoUserId")
+DO NOT overload user_id for different ID types
 
-### 2.1 Login / Register
+7️⃣ Long-Term Fix (PROPER ARCHITECTURE)
+Auth Service
+ Generate UUID on user creation
 
-**Behavior**
+ Store:
 
-* Fast, minimal
-* Clear error messages
-* Remember user session
+id (UUID, primary key)
 
-**TODO**
+mongo_id (optional reference)
 
-* [ ] Inline validation
-* [ ] Friendly auth error messages
-* [ ] Loading states on submit
+Everywhere else:
+AI
 
----
+Insights
 
-## 3. Onboarding (CRITICAL)
+Analytics
 
-### Goal
+Billing
 
-Get user to **first mission** in under 5 minutes.
+➡️ Use UUID ONLY
 
-### Flow
+8️⃣ Add Failing Test (Regression Protection)
+ Send ObjectId → expect 400
 
-1. Company type
-2. Primary goal
-3. Team size
+ Send UUID → expect 200
 
-### Output
+ Ensure no 500 errors possible
 
-* Personalized dashboard
-* First AI insight
-* First mission auto-created
+✅ Definition of Done
+No Postgres UUID errors
 
-**TODO**
+Backend returns 400 on bad IDs
 
-* [ ] Limit onboarding to 3 steps max
-* [ ] Store onboarding answers
-* [ ] Generate first recommendation
-* [ ] Auto-create first mission
+AI strategy generates successfully
 
----
+DB schema and API agree on ID format
 
-## 4. Dashboard (Most Important Screen)
-
-### Dashboard Must Show
-
-1. **Primary Insight Card**
-
-   * Biggest growth issue right now
-   * Clear language (no jargon)
-
-2. **Primary Action**
-
-   * Button → Start Mission
-
-3. **Supporting Context**
-
-   * Simple trend
-   * One supporting metric
-
-**Dashboard MUST NOT**
-
-* Show more than 3 charts
-* Overwhelm user with numbers
-
-**TODO**
-
-* [ ] Redesign dashboard around “Next Best Action”
-* [ ] Remove non-essential widgets
-* [ ] Add loading skeletons
 
 ---
 
-## 5. AI Recommendations Engine
-
-### Rule
-
-AI never ends with information — it ends with action.
-
-### Recommendation Structure
-
-* Problem
-* Why it matters
-* Expected impact
-* Action button → Mission
-
-**Phase 1 (Rules-based)**
-
-* Low activation → onboarding mission
-* Drop in usage → feature discovery mission
-* No engagement → reactivation mission
-
-**TODO**
-
-* [ ] Create Recommendation model
-* [ ] Store recommendations
-* [ ] Link each recommendation to a mission
-
----
-
-## 6. Missions System (Action Layer)
-
-### Mission Structure
-
-* Title
-* Why this matters
-* Steps (checklist)
-* Completion criteria
-
-### Behavior
-
-* One active mission at a time (initially)
-* Clear completion feedback
-* Rewards on completion
-
-**TODO**
-
-* [ ] Mission creation logic
-* [ ] Checklist-based missions
-* [ ] Completion tracking
-
----
-
-## 7. Gamification (Motivation Layer)
-
-### What to Reward
-
-* Completing missions
-* Applying recommendations
-* Consistent progress
-
-### What NOT to Reward
-
-* Logging in
-* Random clicks
-
-**Gamification Elements**
-
-* XP
-* Levels
-* Badges
-
-**TODO**
-
-* [ ] XP rules tied to real actions
-* [ ] Visual success animations
-* [ ] Progress indicators
-
----
-
-## 8. Analytics (Insight Layer)
-
-### Analytics Must Answer
-
-> “Is this getting better or worse?”
-
-### Rules
-
-* Every chart has context
-* Every chart ties to a recommendation
-
-**Tracked Events**
-
-* Page views
-* Feature usage
-* Mission completion
-* Recommendation applied
-
-**TODO**
-
-* [ ] Event tracking backend
-* [ ] Analytics dashboard simplification
-* [ ] Insight-to-action links
-
----
-
-## 9. Leaderboard & Team Features
-
-### Purpose
-
-* Motivation
-* Visibility
-* Accountability
-
-### Behavior
-
-* Rank by meaningful progress
-* Weekly reset (optional)
-
-**TODO**
-
-* [ ] Role-based access
-* [ ] Team progress metrics
-* [ ] Leaderboard logic
-
----
-
-## 10. Settings & Preferences
-
-### Must Include
-
-* Profile
-* Team management
-* Notifications
-* Subscription
-
-**TODO**
-
-* [ ] Clear section grouping
-* [ ] Save feedback on every action
-
----
-
-## 11. Performance & Polish (Non-Negotiable)
-
-* Skeleton loaders (not spinners)
-* Hover & active states everywhere
-* Smooth transitions
-* Mobile responsiveness
-
-**TODO**
-
-* [ ] Add loading skeleton components
-* [ ] Add micro-interactions
-* [ ] Test mobile layouts
-
----
-
-## 12. Monetization Readiness
-
-### Tiers
-
-* Free
-* Pro
-* Team
-
-### Limits
-
-* Events tracked
-* AI recommendations
-* Team size
-
-**TODO**
-
-* [ ] Subscription model
-* [ ] Usage limits
-* [ ] Upgrade prompts
-
----
-
-## 13. Launch Readiness Checklist
-
-* [ ] First-time user completes mission < 24h
-* [ ] App explains itself without docs
-* [ ] No dead ends
-* [ ] No blank screens
-* [ ] Clear value within 2 minutes
-
----
-
-## Final Rule (Print This)
-
-> If a feature does not reduce confusion, increase action, or improve outcomes — remove it.
-
-This is how GrowthEngine becomes a **serious market competitor**, not just another dashboard.
-
-
-
-
-
-# GrowthEngine – Technical TODO.md
-
-This document defines the **practical technical structure** needed to build GrowthEngine as a scalable, production-ready SaaS. This is written for real development, not theory.
-
----
-
-## 0. Technical North Star
-
-**Goal:**
-Build a scalable, modular SaaS that supports:
-
-* AI-driven recommendations
-* Event-based analytics
-* Gamified action system
-* Team-based B2B usage
-
-**Core Principle:**
-
-> Data → Insight → Action → Feedback
-
-Every technical decision must support this loop.
-
----
-
-## 1. High-Level Architecture
-
-### Stack (Recommended)
-
-**Frontend**
-
-* React (Vite)
-* Tailwind CSS
-* Context + Hooks (state)
-* React Router
-
-**Backend**
-
-* Node.js
-* Express
-* MongoDB (or PostgreSQL)
-* JWT Auth
-
-**Optional (Later)**
-
-* Redis (caching)
-* Queue (BullMQ)
-* LLM API (OpenAI / Anthropic)
-
----
-
-## 2. Repository Structure
-
-```
-growthengine/
-├── backend/
-│   ├── src/
-│   │   ├── config/
-│   │   ├── database/
-│   │   ├── models/
-│   │   ├── controllers/
-│   │   ├── services/
-│   │   ├── routes/
-│   │   ├── middleware/
-│   │   ├── jobs/
-│   │   ├── utils/
-│   │   └── server.js
-│   └── package.json
-│
-├── frontend/
-│   ├── src/
-│   │   ├── assets/
-│   │   ├── components/
-│   │   ├── layouts/
-│   │   ├── pages/
-│   │   ├── contexts/
-│   │   ├── hooks/
-│   │   ├── services/
-│   │   ├── styles/
-│   │   └── utils/
-│   └── package.json
-│
-└── docs/
-```
-
----
-
-## 3. Backend – Core Models (Must Exist)
-
-### User
-
-* id
-* email
-* passwordHash
-* role (owner/admin/member)
-* onboardingCompleted
-
-### Organization
-
-* id
-* name
-* plan
-* members[]
-
-### Event
-
-* userId
-* orgId
-* type
-* metadata
-* timestamp
-
-### Recommendation
-
-* orgId
-* type
-* reason
-* impactScore
-* status
-
-### Mission
-
-* orgId
-* recommendationId
-* steps[]
-* completed
-
-### Gamification
-
-* userId
-* xp
-* level
-* badges[]
-
-**TODO**
-
-* [ ] Define schemas
-* [ ] Add indexes for performance
-
----
-
-## 4. Backend – Services Layer (CRITICAL)
-
-Services contain logic. Controllers stay thin.
-
-### Required Services
-
-* AuthService
-* EventService
-* AnalyticsService
-* RecommendationService
-* MissionService
-* GamificationService
-* SubscriptionService
-
-**TODO**
-
-* [ ] Move all business logic into services
-* [ ] Keep controllers < 50 lines
-
----
-
-## 5. Event Tracking System
-
-### Purpose
-
-Everything in the app generates events.
-
-### Event Examples
-
-* USER_LOGIN
-* PAGE_VIEW
-* MISSION_STARTED
-* MISSION_COMPLETED
-* RECOMMENDATION_APPLIED
-
-**Flow**
-Frontend → API → EventService → DB
-
-**TODO**
-
-* [ ] Create `/events` API
-* [ ] Centralize event logging
-
----
-
-## 6. AI Recommendation Engine (V1 → V2)
-
-### V1: Rules-Based Engine
-
-Rules based on analytics:
-
-* Low activation → onboarding mission
-* Drop in engagement → reactivation mission
-
-### V2: LLM-Enhanced
-
-* Summarize trends
-* Explain insights
-* Generate mission copy
-
-**TODO**
-
-* [ ] RecommendationService rules
-* [ ] Store recommendation history
-
----
-
-## 7. Missions System (Execution Layer)
-
-### Mission Lifecycle
-
-1. Created (by recommendation)
-2. Started
-3. Completed
-4. Reward issued
-
-**TODO**
-
-* [ ] Mission templates
-* [ ] Completion validation
-
----
-
-## 8. Gamification Engine
-
-### Rules
-
-* XP only for meaningful actions
-* Level progression tied to impact
-
-**TODO**
-
-* [ ] XP calculation rules
-* [ ] Badge triggers
-
----
-
-## 9. Frontend – Application State
-
-### Global State
-
-* Auth
-* Organization
-* Active mission
-* Recommendations
-
-### Rule
-
-No component fetches data directly if shared.
-
-**TODO**
-
-* [ ] Context providers
-* [ ] Custom hooks per domain
-
----
-
-## 10. Frontend – Data Access Layer
-
-Create API wrappers:
-
-* auth.api.js
-* events.api.js
-* analytics.api.js
-* missions.api.js
-* recommendations.api.js
-
-**TODO**
-
-* [ ] Centralize API calls
-* [ ] Error handling
-
----
-
-## 11. Performance & Scaling
-
-### Must-Haves
-
-* Pagination
-* Caching
-* Async jobs
-
-**TODO**
-
-* [ ] Redis integration
-* [ ] Background jobs
-
----
-
-## 12. Security & Reliability
-
-* JWT + refresh tokens
-* Rate limiting
-* Input validation
-* Audit logs
-
-**TODO**
-
-* [ ] Security middleware
-* [ ] Audit trail
-
----
-
-## 13. Deployment Readiness
-
-* Env separation
-* CI/CD
-* Logging
-
-**TODO**
-
-* [ ] Dockerize services
-* [ ] Production logging
-
----
-
-## Final Technical Rule
-
-> If logic is not reusable, testable, or observable — refactor it.
-
-This structure allows GrowthEngine to scale **technically and commercially** without rewrites.
-    
-https://github.com/Jamal-Chak/GrowthEngine.git
+### Straight talk
+This wasn’t a React bug.  
+This wasn’t an AI bug.  
+This was a **data contract violation** — classic backend maturity issue.
+
+https://github.com/Jamal-Chak/GrowthEngine_MarketingEngine-.git

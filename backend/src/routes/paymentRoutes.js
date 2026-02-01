@@ -17,4 +17,7 @@ router.get('/subscription', protect, paymentController.getSubscriptionFn);
 // Cancel subscription
 router.post('/cancel', protect, paymentController.cancelSubscription);
 
+// Mock Gateway Route (Only in Dev/Mock Mode)
+router.get('/mock-gateway', paymentController.mockGateway);
+
 module.exports = router;

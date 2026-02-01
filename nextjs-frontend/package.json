@@ -11,19 +11,22 @@
     },
     "dependencies": {
         "@supabase/ssr": "^0.8.0",
-        "@supabase/supabase-js": "^2.89.0",
+        "@supabase/supabase-js": "^2.93.2",
         "axios": "^1.7.9",
+        "bcryptjs": "^3.0.3",
         "canvas-confetti": "^1.9.4",
         "framer-motion": "^11.15.0",
         "kbar": "^0.1.0-beta.48",
         "lucide-react": "^0.468.0",
         "next": "^15.1.0",
+        "next-auth": "^4.24.13",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
         "recharts": "^2.15.0",
         "zustand": "^5.0.2"
     },
     "devDependencies": {
+        "@types/bcryptjs": "^2.4.6",
         "@types/canvas-confetti": "^1.9.0",
         "@types/node": "^22.19.6",
         "@types/react": "^19.2.8",

@@ -2,32 +2,34 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { motion } from 'framer-motion';
 import { Trophy, Medal, Award, TrendingUp } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
+// import { supabase } from '@/lib/supabase'; // Removed
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 
 export default function LeaderboardPage() {
     const router = useRouter();
+    const { data: session, status } = useSession();
     const [leaderboard, setLeaderboard] = useState<any[]>([]);
     const [userRank, setUserRank] = useState<number | null>(null);
     const [loading, setLoading] = useState(true);
     const [timeframe, setTimeframe] = useState<'week' | 'month' | 'all'>('all');
 
     useEffect(() => {
+        if (status === 'loading') return;
+        if (!session?.user) {
+            router.push('/login');
+            return;
+        }
+
         const fetchLeaderboard = async () => {
             try {
-                const { data: { user } } = await supabase.auth.getUser();
-                if (!user) {
-                    router.push('/login');
-                    return;
-                }
-
                 // Fetch from backend API
-                const response = await fetch(`http://localhost:5000/api/gamification/leaderboard`, {
+                const response = await fetch(`http://127.0.0.1:5000/api/gamification/leaderboard`, {
                     headers: {
-                        'Authorization': `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`
+                        'Authorization': `Bearer ${session.accessToken}`
                     }
                 });
 
@@ -36,7 +38,7 @@ export default function LeaderboardPage() {
                     setLeaderboard(data.leaderboard || []);
 
                     // Find user's rank
-                    const rank = data.leaderboard?.findIndex((entry: any) => entry.userId === user.id);
+                    const rank = data.leaderboard?.findIndex((entry: any) => entry.userId === session.user.id);
                     setUserRank(rank >= 0 ? rank + 1 : null);
                 }
             } catch (error) {
@@ -47,7 +49,7 @@ export default function LeaderboardPage() {
         };
 
         fetchLeaderboard();
-    }, [router, timeframe]);
+    }, [router, timeframe, session, status]); // Added dependencies
 
     if (loading) {
         return (
@@ -87,8 +89,8 @@ export default function LeaderboardPage() {
                         key={tf}
                         onClick={() => setTimeframe(tf)}
                         className={`px-4 py-2 rounded-lg font-medium transition-all capitalize ${timeframe === tf
-                                ? 'bg-primary-500 text-white'
-                                : 'bg-white/5 text-white/60 hover:bg-white/10'
+                            ? 'bg-primary-500 text-white'
+                            : 'bg-white/5 text-white/60 hover:bg-white/10'
                             }`}
                     >
                         {tf === 'all' ? 'All Time' : `This ${tf}`}

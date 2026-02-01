@@ -16,9 +16,12 @@ import {
 import {
     Zap,
     Target,
+    Clock,
+    CheckCircle,
+    ArrowRight
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabase';
+// import { supabase } from '@/lib/supabase'; // Removed
 import { fetchUserStats, fetchUserMissions, GamificationStats, UserMission } from '@/lib/api';
 import { Sidebar } from '@/components/dashboard/Sidebar';
 import { StatCard } from '@/components/dashboard/StatCard';
@@ -32,75 +35,87 @@ import {
 } from '@/lib/constants';
 import { triggerSuccessConfetti } from '@/lib/utils/confetti';
 
+import { useSession } from 'next-auth/react';
+
 export default function Dashboard() {
     const router = useRouter();
-    const [user, setUser] = useState<any>(null);
+    const { data: session, status } = useSession();
+
+    // Using session data for user display
+    const user = session?.user;
+
     const [sidebarOpen, setSidebarOpen] = useState(true);
     const [stats, setStats] = useState<GamificationStats | null>(null);
     const [missions, setMissions] = useState<UserMission[]>([]);
     const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
     const [loading, setLoading] = useState(true);
     const [isGenerating, setIsGenerating] = useState(false);
+    const [error, setError] = useState('');
 
     useEffect(() => {
+        if (status === 'loading') return;
+
+        if (!session?.user) {
+            router.push('/login');
+            return;
+        }
+
         const initDashboard = async () => {
-            // Check if we have a valid Supabase setup
-            const hasSupabase = process.env.NEXT_PUBLIC_SUPABASE_URL && !process.env.NEXT_PUBLIC_SUPABASE_URL.includes('your-project-url');
-
-            if (!hasSupabase) {
-                console.warn('Supabase not configured correctly. Redirecting to login or showing error.');
-                // In a real scenario we might redirect, but for now let's allow it to fail gracefully or show a message
-            }
-
             try {
-                const { data: { user } } = await supabase.auth.getUser();
+                // Fetch real data using MongoDB ID from session
+                const [userStats, userMissions, userRecs] = await Promise.all([
+                    fetchUserStats(session.user.id, session.accessToken),
+                    fetchUserMissions(session.user.id, session.accessToken),
+                    AIService.getRecommendations(session.user.id, session.accessToken)
+                ]);
 
-                if (!user) {
-                    router.push('/');
+                setStats(userStats);
+
+                if (userMissions && userMissions.length > 0) {
+                    setMissions(userMissions);
+                } else {
+                    // Activation Rule: If no missions, force onboarding
+                    console.log('No missions found. Redirecting to onboarding.');
+                    router.push('/onboarding');
                     return;
                 }
 
-                setUser({
-                    name: user.user_metadata?.full_name || user.email?.split('@')[0] || 'User',
-                    email: user.email
-                });
-
-                // Fetch real data
-                if (hasSupabase) {
-                    const [userStats, userMissions, userRecs] = await Promise.all([
-                        fetchUserStats(user.id),
-                        fetchUserMissions(user.id),
-                        AIService.getRecommendations()
-                    ]);
-                    setStats(userStats);
-                    setMissions(userMissions || []);
-                    setRecommendations(userRecs || []);
-
-                    // Track page view
-                    EventService.trackEvent('page_view', { path: '/dashboard' });
-                } else {
-                    setRecommendations(MOCK_RECOMMENDATIONS as any);
-                }
+                setRecommendations(userRecs || []);
+                EventService.trackEvent('page_view', { path: '/dashboard' });
 
             } catch (e) {
-                console.error('Auth check failed:', e);
-                router.push('/');
+                console.error('Dashboard init failed:', e);
             } finally {
                 setLoading(false);
             }
         };
 
         initDashboard();
-    }, [router]);
+    }, [router, session, status]);
 
     const handleGenerateStrategy = async () => {
+        if (!session?.user) return;
+
         setIsGenerating(true);
         try {
-            const newRecs = await AIService.generateStrategy();
+            const newRecs = await AIService.generateStrategy(session.user.id, session.accessToken);
             setRecommendations(prev => [...newRecs, ...prev]);
+
+            // Refresh missions to show the newly created AI mission
+            const updatedMissions = await fetchUserMissions(session.user.id, session.accessToken);
+            setMissions(updatedMissions);
+
             triggerSuccessConfetti();
-        } catch (err) {
-            console.error('Failed to generate strategy:', err);
+        } catch (error: any) {
+            console.error("Failed to generate strategy:", error);
+
+            // Check for subscription limit error
+            if (error.message.includes("limit")) {
+                alert("🚀 You've reached your free limit! Upgrade to Pro for unlimited AI strategies.");
+                // TODO: Open Upgrade Modal
+            } else {
+                setError("Failed to generate strategy. Please try again.");
+            }
         } finally {
             setIsGenerating(false);
         }
@@ -136,11 +151,24 @@ export default function Dashboard() {
             {/* Main Content */}
             <main className="flex-1 p-8 overflow-auto">
                 {/* Header */}
-                <div className="mb-8">
-                    <h1 className="text-4xl font-bold mb-2">
-                        Welcome back, <span className="text-gradient">{user?.name}</span>
-                    </h1>
-                    <p className="text-white/60">Here&apos;s what&apos;s happening with your growth today</p>
+                <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h1 className="text-4xl font-bold mb-2">
+                            Welcome back, <span className="text-gradient">{user?.name}</span>
+                        </h1>
+                        <p className="text-white/60">Here&apos;s what&apos;s happening with your growth today</p>
+                    </div>
+                    <div className="flex flex-col items-end gap-2">
+                        {error && <span className="text-red-400 text-sm">{error}</span>}
+                        <button
+                            onClick={handleGenerateStrategy}
+                            disabled={isGenerating}
+                            className="btn-primary flex items-center gap-2 whitespace-nowrap shadow-lg shadow-primary-500/20"
+                        >
+                            <Zap className={`w-4 h-4 ${isGenerating ? 'animate-spin' : ''}`} />
+                            {isGenerating ? 'Generating...' : 'New AI Strategy'}
+                        </button>
+                    </div>
                 </div>
 
                 {/* Primary Focus Section */}
@@ -155,28 +183,48 @@ export default function Dashboard() {
                                         </span>
                                         <h2 className="text-sm font-medium text-white/50">Your Next Best Action</h2>
                                     </div>
-                                    <h3 className="text-3xl font-bold text-white leading-tight">
-                                        {missions[0].title}
+                                    <div className="flex items-center gap-4 text-sm text-white/50 mb-4">
+                                        <div className="flex items-center gap-1">
+                                            <Clock className="w-4 h-4" />
+                                            {missions[0]?.estimatedTime || '10 min'}
+                                        </div>
+                                        <div className="flex items-center gap-1">
+                                            <CheckCircle className="w-4 h-4" />
+                                            {missions[0]?.completed_steps || 0}/{missions[0]?.total_steps || 1} Steps
+                                        </div>
+                                        <div className="flex items-center gap-1 text-primary-300">
+                                            <Zap className="w-4 h-4" />
+                                            {missions[0]?.xp_reward || 100} XP
+                                        </div>
+                                    </div>
+                                    <h3 className="text-3xl font-bold text-white leading-tight mb-2">
+                                        {missions[0]?.title || "Start Your First Mission"}
                                     </h3>
                                     <p className="text-lg text-white/70">
-                                        {missions[0].description || "Complete this mission to unlock 100 XP and improve your growth metrics."}
+                                        {missions[0]?.description || "Complete this mission to unlock 100 XP and improve your growth metrics."}
                                     </p>
                                 </div>
                                 <div className="flex-shrink-0">
                                     <button
-                                        className="btn-primary text-lg px-8 py-4 shadow-xl shadow-primary-500/20"
-                                        onClick={() => router.push(`/missions/${missions[0].id}`)}
+                                        className="btn-primary text-lg px-8 py-4 shadow-xl shadow-primary-500/20 hover:scale-105 transition-transform"
+                                        onClick={() => router.push(`/missions/${missions[0]?.id || 'onboarding'}`)}
                                     >
                                         Start Mission
                                     </button>
                                 </div>
                             </div>
                         ) : (
-                            <div className="text-center py-12">
-                                <h3 className="text-2xl font-bold mb-2">All caught up!</h3>
-                                <p className="text-white/60 mb-6">Great job. Generate a new strategy to get more missions.</p>
-                                <button onClick={handleGenerateStrategy} className="btn-primary">
-                                    Generate Strategy
+                            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                                <div className="text-center md:text-left">
+                                    <h3 className="text-2xl font-bold mb-2">You're on a roll!</h3>
+                                    <p className="text-white/60">Complete your active missions or generate a new AI strategy.</p>
+                                </div>
+                                <button
+                                    onClick={handleGenerateStrategy}
+                                    disabled={isGenerating}
+                                    className="btn-primary whitespace-nowrap"
+                                >
+                                    {isGenerating ? 'Generating...' : '✨ New AI Strategy'}
                                 </button>
                             </div>
                         )}
@@ -186,34 +234,40 @@ export default function Dashboard() {
                 {/* Secondary Metrics & Active Missions */}
                 <div className="grid lg:grid-cols-3 gap-6">
                     {/* Activity Chart (Context) */}
-                    <Card className="lg:col-span-2">
-                        <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
-                            <Zap className="w-5 h-5 text-yellow-400" />
-                            Growth Trend
+                    {/* Secondary Missions (Up Next) */}
+                    <div className="lg:col-span-2 space-y-6">
+                        <h3 className="text-lg font-bold flex items-center gap-2">
+                            <Target className="w-5 h-5 text-primary-400" />
+                            Up Next
                         </h3>
-                        <ResponsiveContainer width="100%" height={250}>
-                            <AreaChart data={MOCK_CHART_DATA}>
-                                <defs>
-                                    <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.3} />
-                                        <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0} />
-                                    </linearGradient>
-                                </defs>
-                                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-                                <XAxis dataKey="name" stroke="rgba(255,255,255,0.3)" fontSize={12} tickLine={false} axisLine={false} />
-                                <YAxis stroke="rgba(255,255,255,0.3)" fontSize={12} tickLine={false} axisLine={false} />
-                                <Tooltip
-                                    contentStyle={{
-                                        backgroundColor: 'rgba(15, 23, 42, 0.95)',
-                                        border: '1px solid rgba(255,255,255,0.1)',
-                                        borderRadius: '8px',
-                                        boxShadow: '0 4px 20px rgba(0,0,0,0.5)'
-                                    }}
-                                />
-                                <Area type="monotone" dataKey="value" stroke="#0ea5e9" strokeWidth={2} fillOpacity={1} fill="url(#colorValue)" />
-                            </AreaChart>
-                        </ResponsiveContainer>
-                    </Card>
+                        {missions.slice(1, 4).map((mission, i) => (
+                            <Card key={i} className="hover:border-primary-500/30 transition-colors group cursor-pointer" onClick={() => router.push(`/missions/${mission.id}`)}>
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/30 group-hover:bg-primary-500/10 group-hover:text-primary-400 transition-colors">
+                                            {i + 2}
+                                        </div>
+                                        <div>
+                                            <h4 className="font-bold text-lg group-hover:text-primary-300 transition-colors">{mission.title}</h4>
+                                            <p className="text-white/50 text-sm line-clamp-1">{mission.description}</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-4">
+                                        <div className="text-sm text-white/40 flex items-center gap-1">
+                                            <Zap className="w-3 h-3 text-yellow-500/50" />
+                                            {mission.xp_reward} XP
+                                        </div>
+                                        <ArrowRight className="w-5 h-5 text-white/20 group-hover:text-white group-hover:translate-x-1 transition-all" />
+                                    </div>
+                                </div>
+                            </Card>
+                        ))}
+                        {missions.length < 2 && (
+                            <Card className="border-dashed border-white/10 bg-transparent flex items-center justify-center py-8">
+                                <p className="text-white/30 text-sm">Complete your current mission to unlock more.</p>
+                            </Card>
+                        )}
+                    </div>
 
                     {/* Quick Stats (Context) */}
                     <div className="space-y-6">
@@ -237,20 +291,22 @@ export default function Dashboard() {
                 </div>
 
                 {/* Hidden / Deprioritized Recommendations */}
-                {recommendations.length > 0 && (
-                    <div className="mt-8 opacity-50 hover:opacity-100 transition-opacity">
-                        <h4 className="text-sm font-medium text-white/30 uppercase tracking-widest mb-4">Pending Insights</h4>
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {recommendations.slice(0, 3).map((rec, i) => (
-                                <div key={i} className="p-4 rounded-xl border border-white/5 bg-white/5">
-                                    <div className="text-sm font-medium mb-1">{rec.type}</div>
-                                    <div className="text-xs text-white/50">{rec.reason}</div>
-                                </div>
-                            ))}
+                {
+                    recommendations.length > 0 && (
+                        <div className="mt-8 opacity-50 hover:opacity-100 transition-opacity">
+                            <h4 className="text-sm font-medium text-white/30 uppercase tracking-widest mb-4">Pending Insights</h4>
+                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                {recommendations.slice(0, 3).map((rec, i) => (
+                                    <div key={i} className="p-4 rounded-xl border border-white/5 bg-white/5">
+                                        <div className="text-sm font-medium mb-1">{rec.type}</div>
+                                        <div className="text-xs text-white/50">{rec.reason}</div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                )}
-            </main>
-        </div>
+                    )
+                }
+            </main >
+        </div >
     );
 }

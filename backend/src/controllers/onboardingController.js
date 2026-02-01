@@ -2,13 +2,13 @@ const OnboardingService = require('../services/OnboardingService');
 
 exports.completeOnboarding = async (req, res) => {
     try {
-        const { businessType, goal, teamSize, userId } = req.body;
+        const { businessType, goal, teamSize, channel, userId } = req.body;
 
         if (!userId) {
             return res.status(400).json({ success: false, error: 'User ID is required' });
         }
 
-        const result = await OnboardingService.completeOnboarding(userId, { businessType, goal, teamSize });
+        const result = await OnboardingService.completeOnboarding(userId, { businessType, goal, teamSize, channel });
 
         res.json({
             success: true,

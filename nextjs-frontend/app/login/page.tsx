@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
+import { signIn } from 'next-auth/react';
 import { motion } from 'framer-motion';
 import { LogIn, Mail, Lock } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card } from '@/components/ui/Card';
@@ -15,7 +15,7 @@ export default function LoginPage() {
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
-    const { login } = useAuth();
+    const router = useRouter();
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -23,38 +23,22 @@ export default function LoginPage() {
         setError('');
 
         try {
-            // Use Supabase authentication
-            const { supabase } = await import('@/lib/supabase');
-
-            const { data, error } = await supabase.auth.signInWithPassword({
+            const result = await signIn('credentials', {
+                redirect: false,
                 email,
                 password,
             });
 
-            if (error) {
-                throw new Error(error.message);
+            if (result?.error) {
+                setError(result.error);
+            } else if (result?.ok) {
+                // Successfully logged in
+                router.push('/dashboard');
+                router.refresh();
             }
-
-            if (!data.user) {
-                throw new Error('Login failed - no user data returned');
-            }
-
-            // Create user object from Supabase data
-            const userData = {
-                _id: data.user.id,
-                name: data.user.user_metadata?.name || email.split('@')[0],
-                email: data.user.email!,
-                company: data.user.user_metadata?.company,
-                role: data.user.user_metadata?.role || 'user'
-            };
-
-            // Use the login function from AuthContext to set user and token
-            login(data.session?.access_token || '', userData);
-
-            // Redirect is handled by login() function
         } catch (err: any) {
             console.error('Login error:', err);
-            setError(err.message || 'Login failed. Please try again.');
+            setError('An unexpected error occurred');
         } finally {
             setIsLoading(false);
         }

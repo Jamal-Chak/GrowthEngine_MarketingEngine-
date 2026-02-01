@@ -31,6 +31,8 @@ const recommendationRoutes = require('./routes/recommendationRoutes');
 const missionRoutes = require('./routes/missionRoutes');
 const eventRoutes = require('./routes/eventRoutes');
 const onboardingRoutes = require('./routes/onboardingRoutes');
+const insightsRoutes = require('./routes/insightsRoutes');
+const feedbackRoutes = require('./routes/feedbackRoutes');
 
 // Register routes
 app.use('/api/auth', authRoutes);
@@ -38,7 +40,12 @@ app.use('/api/recommendations', recommendationRoutes);
 app.use('/api/missions', missionRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/onboarding', onboardingRoutes);
+app.use('/api/gamification', require('./routes/gamificationRoutes'));
 app.use('/api/payments', require('./routes/paymentRoutes'));
+app.use('/api/insights', insightsRoutes);
+app.use('/api/insights', insightsRoutes);
+app.use('/api/feedback', feedbackRoutes);
+app.use('/api/email', require('./routes/emailRoutes'));
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

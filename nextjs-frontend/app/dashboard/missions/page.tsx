@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { motion } from 'framer-motion';
 import { Plus, Target } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
+// import { supabase } from '@/lib/supabase'; // Removed
 import { MissionCard } from '@/components/missions/MissionCard';
 import { Button } from '@/components/ui/Button';
 import { EmptyState } from '@/components/ui/EmptyState';
@@ -12,23 +13,24 @@ import { staggerContainer, staggerItem } from '@/lib/animations';
 
 export default function MissionsPage() {
     const router = useRouter();
+    const { data: session, status } = useSession();
     const [missions, setMissions] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
 
     useEffect(() => {
+        if (status === 'loading') return;
+        if (!session?.user) {
+            router.push('/login');
+            return;
+        }
+
         const fetchMissions = async () => {
             try {
-                const { data: { user } } = await supabase.auth.getUser();
-                if (!user) {
-                    router.push('/login');
-                    return;
-                }
-
                 // Fetch from backend API
-                const response = await fetch(`http://localhost:5000/api/missions?userId=${user.id}`, {
+                const response = await fetch(`http://127.0.0.1:5000/api/missions?userId=${session.user.id}`, {
                     headers: {
-                        'Authorization': `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`
+                        'Authorization': `Bearer ${session.accessToken}`
                     }
                 });
 
@@ -44,7 +46,7 @@ export default function MissionsPage() {
         };
 
         fetchMissions();
-    }, [router]);
+    }, [router, session, status]);
 
     const filteredMissions = missions.filter(mission => {
         if (filter === 'active') return !mission.completed;
@@ -84,8 +86,8 @@ export default function MissionsPage() {
                             key={f}
                             onClick={() => setFilter(f)}
                             className={`px-4 py-2 rounded-lg font-medium transition-all ${filter === f
-                                    ? 'bg-primary-500 text-white'
-                                    : 'bg-white/5 text-white/60 hover:bg-white/10'
+                                ? 'bg-primary-500 text-white'
+                                : 'bg-white/5 text-white/60 hover:bg-white/10'
                                 }`}
                         >
                             {f.charAt(0).toUpperCase() + f.slice(1)}
